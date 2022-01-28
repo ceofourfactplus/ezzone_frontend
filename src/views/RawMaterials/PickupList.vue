@@ -1,44 +1,39 @@
 <template>
   <div>
     <nav-app :rm_menu="true" :url_name="'DashBoard'">Pickup&#160;List</nav-app>
-    <div class="row" style="width: 100%; margin: auto">
-      <div class="col-12">
+    <div class="row AreaPage">
+      <div class="col-12 w-100" style="padding:0%;">
         <SearchBar
           @search="serchByTyping"
-          style="width: 98%; margin-left: 5px"
+          style="width: 100%;"
         />
       </div>
     </div>
 
-    <div class="table">
-      <div class="table-header" style="width: 115%; margin-left: -49px;">
-        <div class="row">
-          <div class="col-3 w-100" style="margin-left: 10px">Date</div>
-          <div
-            class="col-4 w-100"
-            style="margin-left: 18px; text-align: center"
-          >
-            Name
-          </div>
-          <div class="col-1 w-100">Qty</div>
-          <div class="col-1 w-100" style="margin-left: 14px">Unit</div>
-          <div class="col-3 w-100">Pickup By</div>
-        </div>
+    <div>
+      <!-- header -->
+      <div class="AreaPage row table-header" style="line-height:160%;">
+        <div class="col-2 w-100">Date</div>
+        <div class="col-5 w-100">Name</div>
+        <div class="col-2 w-100">Qty</div>
+        <div class="col-1 w-100">Unit</div>
+        <div class="col-2 w-100">Pickup By</div>
       </div>
-      <div class="row table-item" v-for="item in pickup_items" :key="item.id" style="width: 115%; margin-left: -49px;">
-        <div class="col-3 w-100">
-          {{ item.create_at.slice(0, 10).replace(/-/g, "/") }}
-        </div>
-        <div class="col-4 w-100" style="text-align: left; padding-left: 20px; white-space: nowrap; overflow-x: auto;">
+
+      <!-- item -->
+      <div class="AreaPage row table-item" v-for="item in pickup_items" :key="item.id">
+        <div class="col-2 w-100">
+          {{  format_date(item.create_at) }}</div>
+        <div class="col-5 w-100" style="padding-right:0%;text-align: left; white-space: nowrap; overflow-x: auto;">
           {{ item.raw_material_set.name }}
         </div>
-        <div class="col-1 w-100" style="margin-left: 5px">
+        <div class="col-2 w-100">
           {{ item.amount }}
         </div>
-        <div class="col-1 w-100" style="margin-left: 20px; margin-right: -20px">
+        <div class="col-1 w-100">
           {{ item.unit_set.unit }}
         </div>
-        <div class="col-3 w-100" style="margin-left: 10px">
+        <div class="col-2 w-100">
           {{ item.create_by_set.username }}
         </div>
       </div>
@@ -83,6 +78,11 @@ export default {
         this.pickup_items = temp;
       }
     },
+    format_date(date) {
+      console.log(date)
+      var a = date.slice(0,10).split("-")      
+      return a[2]+"/"+a[1]+"/"+a[0]
+    }
   },
   watch: {
     remain() {
@@ -106,11 +106,15 @@ export default {
 </script>
 
 <style scoped>
-.table {
-  width: 680px;
-  margin-top: 15px;
-}
+
 div.row.table-item {
-  margin-left: 0px;
+  margin-top: 1.2%;
+  line-height:210%;
+}
+.AreaPage {
+  width: 96%;
+  margin: auto;
+  margin-top: 1.2%;
+  height: 45px;
 }
 </style>

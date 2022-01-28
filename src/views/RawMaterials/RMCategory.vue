@@ -1,34 +1,36 @@
-
 <template>
   <div>
     <nav-app :url_name="'RawMaterials'" :rm_menu="true">RM Category</nav-app>
-    <div class="row" v-if="is_staff">
-      <div class="col-11 wrap-search">
+    <div class="AreaPage row">
+      <div class="col-10 wrap-search">
         <SearchBar @search="search_by_typing" />
       </div>
-      <div style="padding-left: 0px">
+      <div class="col-2 w-100" style="padding:0%; text-align:left;">
         <button class="btn-ghost" style="white-space: nowrap" @click="add_category_status = true">
           + New
         </button>
       </div>
     </div>
-    <SearchBar v-else @search="search_by_typing" />
     <!-- Table -->
-    <div class="table" style="margin-top: 10px">
+    <div class="AreaPage" style="margin-top: 10px">
       <div class="table-header">
         <!-- Is Staff -->
-        <div v-if="is_staff" class="row" style="padding-right: 80px">
-          <div class="col-6" style="margin-left: 90px">Name</div>
-          <div class="col-3" style="padding-left: 10px">Product</div>
-          <div class="col-3" style="padding-left: 20px">Amount</div>
+        <div v-if="is_staff" class="row w-100" style="margin:0%;text-aling:center;line-height:170%;">
+          <div class="col-6 w-100" style="padding-left:10%;">Name</div>
+          <div class="col-3 w-100" style="padding-left:30px">Product</div>
+          <div class="col-2 w-100">Amount</div>
+          <div class="col-1 w-100"></div>
         </div>
       </div>
+      
+      
       <div
         style="
-          height: 660px;
+          height: 780px;
           overflow-y: scroll;
           overflow-x: hidden;
           border-radius: 10px;
+          margin-top:10px;
         "
       >
         <div v-if="is_staff">
@@ -38,21 +40,24 @@
             :key="idx"
             style="
               padding-right: 0px;
-              margin: 10px 0px 0px 0px;
+              margin: 0px 0px 10px 0px;
               background-color: #303344;
               border-radius: 10px;
+              line-height:190%;
+              text-align:center;
             "
           >
-            <div class="col-6" style="text-align: left; width: 100%; position: relative; bottom: 8px;">
+            <div class="col-6 NameItem">
               {{ item.name }}
             </div>
-            <div class="col-2" style="margin-left: -20px; position: relative; bottom: 8px;">{{item.product}}</div>
-            <div class="col-2" style="margin-left: 30px; position: relative; bottom: 8px;">{{item.amount}}</div>
-            <div class="col-2 w-100" style="position: relative; bottom: 8px;">
+            <div class="col-3 w-100" style="padding-left:30px" >{{item.product}}</div>
+            <div class="col-2 w-100" >{{item.amount}}</div>
+            <div class="col-1 w-100" style="position: relative; bottom: 2px;">
               <img
                 @click="SelectCategory(item)"
                 src="../../assets/icon/edit.png"
                 alt="img"
+                style="height:32px;"
               />
             </div>
           </div>
@@ -268,13 +273,29 @@ h2 {
   border-color: #65b0f6;
   color: #65b0f6;
   width: 119px;
-  height: 50px;
-  margin: 0px 38px 0px 0px;
+  height: 47px;
+  margin: 0px;
+  right: 0%;
 }
 .wrap-search {
-  min-width: 610px;
+  min-width: 98%;
   width: fit-content;
   padding: 0px;
-  margin-left: 45px;
+
+}
+.AreaPage {
+  width: 90%;
+  margin: auto;
+  margin-top: 1.2%;
+  height: 45px;
+}
+.NameItem {
+  text-align: left;
+  position: relative;
+  white-space: nowrap;
+  overflow-x:auto;
+  width:100%;
+  padding: 0%;
+  margin-left: 5%;
 }
 </style>

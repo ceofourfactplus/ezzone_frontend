@@ -47,7 +47,7 @@
           <div class="col-2 w-100" style="right:-10px;position:relative;">Price</div>
         </div>
       </div>
-      <div style="overflow-x: auto; height: 650px">
+      <div style="height: 650px">
         <div v-for="recept in all_recept" :key="recept">
           <!-- Table Item Head -->
           <div class="table-item" style="height:45px;padding-top:0%; padding-bottom:0%;">
@@ -349,7 +349,7 @@ Total  {{ recept.total_price }}</p
               <div class="row">
                 <div class="col-12 line-col">
                   Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;
-                  <img style="margin-left: 10px;" :src="$store.state.raw_material.status_image[po_popup_item.raw_material_set.status]['img']" />
+                  <img style="margin-left: 10px;transform:rotate(180deg);" :src="$store.state.raw_material.status_image[po_popup_item.raw_material_set.status]['img']" />
                 </div>
               </div>
               <!-- Supplier -->
@@ -572,11 +572,10 @@ export default {
       });
     },
     calc_price_unit(unit_id){
-      this.po_popup_item.raw_material_set.pricerawmaterial_set.forEach(prm => {
-        if(prm.unit == unit_id) {
-          this.po_popup_item.last_price = prm.last_price
-        }
-      })
+      console.log(unit_id)
+      // this.po_popup_item.raw_material_set.pricerawmaterial_set.forEach(prm => {
+
+      // })
     },
     // get_min_sup(item) {
     //   api_raw_material.get("get-min-supplier/"+item.).then((response) => {
@@ -821,7 +820,6 @@ export default {
       console.log(this.data, "data");
     },
     async confirm() {
-      this.$store.state.raw_material.all_receipt = []
       await this.ConvertSlectedToReceptData();
       this.data.forEach((receipt) => {
         const receipt_raw_material = {
