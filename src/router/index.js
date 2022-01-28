@@ -114,6 +114,10 @@ import ProductQty from "../components/product/ProductQty.vue";
 
 const routes = [
   {
+    path: "/",
+    redirect: "/user/login",
+  },
+  {
     path: "/face-login/",
     name: "FaceLogin",
     component: FaceLogin,
