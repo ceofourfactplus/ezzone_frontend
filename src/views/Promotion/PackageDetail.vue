@@ -21,13 +21,13 @@
           <!-- Start Date -->
           <div class="row" style="margin-top: 20px">
             <div class="col-12 w-100 txt">
-              <div style="display: inline" v-if="temp_start == null">
+              <div style="display: inline" v-if="package_item.start_date == null">
                 <span style="margin-left: -140px">Start Date</span
-                >&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{ temp_start }}&nbsp;&nbsp;
+                >&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{ package_item.start_date }}&nbsp;&nbsp;
               </div>
               <div style="display: inline" v-else>
                 <span style="margin-left: 23px">Start Date</span
-                >&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{ temp_start }}&nbsp;&nbsp;
+                >&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{ package_item.start_date }}&nbsp;&nbsp;
               </div>
               <input
                 style="display: inline"
@@ -660,7 +660,7 @@
               type="text"
               class="input-promotion w-100"
               style="height: 90%"
-              v-model="package_item.discount_price"
+              v-model="discount_price"
             />
           </div>
         </div>
@@ -689,7 +689,6 @@ export default {
     this.is_staff = this.$store.state.auth.userInfo["is_staff"];
     this.fetchProducts();
     this.fetchToppings();
-    this.calc_total_price();
   },
   data() {
     return {
@@ -743,10 +742,10 @@ export default {
   methods: {
     fetchPackage() {
       this.loading = true;
-      api_promotion.get(`package/${this.$route.params.id}`).then((response) => {
-        console.log(response.data, "package");
+      api_promotion.get('get-package/'+this.$route.params.id).then((response) => {
         this.package_item = response.data;
         this.package_items = response.data.packageitem_set;
+        this.discount_price = this.package_item.pricepackage_set[0].discount_price;
         this.loading = false;
       });
     },
@@ -915,9 +914,8 @@ export default {
       console.log(this.img, "img");
     },
     format_date(e) {
-      this.start_date = e.target.value;
-      var temp_date = e.target.value.split("-");
-      this.temp_start = `${temp_date[2]}/${temp_date[1]}/${temp_date[0]}`;
+      console.log(e.target, "e");
+      this.package_item.start_date = e.target
     },
     switch_active(val) {
       this.package_items = val;
@@ -936,7 +934,6 @@ export default {
       };
       this.total_price = 0;
       this.package_items.push(data);
-      this.calc_total_price();
       this.add_menu = false;
       this.add_topping = false;
       this.product_item = {};
@@ -955,7 +952,6 @@ export default {
         total_price: this.topping_item.pricetopping_set[0].price,
       };
       this.package_items[idx].itemtopping_set.push(data);
-      this.calc_total_price();
       this.add_menu = false;
       this.add_topping_to = false;
       this.product_item = {};
@@ -995,7 +991,6 @@ export default {
       }
       this.selected_items = [];
       this.selected_item_toppings = [];
-      this.calc_total_price();
     },
     cancel_to_create() {
       this.add_menu = false;
@@ -1004,7 +999,9 @@ export default {
       this.qty = null;
       this.total_price = 0;
     },
-    calc_total_price() {
+  },
+  computed:{
+    calc_total_price(){
       this.total_price = 0;
       this.package_items.forEach((el) => {
         this.total_price += parseInt(el.product_set.priceproduct_set[0].price);
@@ -1014,7 +1011,7 @@ export default {
           );
         });
       });
-    },
+    }
   },
   beforeMount() {
     this.fetchPackage();
