@@ -1,116 +1,79 @@
-
 <template>
   <div>
     <nav-app :url_name="'RawMaterials'" :rm_menu="true">PO&#160;Notice</nav-app>
     <!-- Second Nav -->
-    <div class="row" style="width: 90%; margin: auto">
+    <div class="row AreaPage" style="margin-top: 10px;">
       <div class="col-8" style="width: 100%; padding-left: 0px">
         <SearchBar style="width: 100%" @search="serchByTyping" />
       </div>
       <div class="col-2 w-100" style="padding: 0px">
-        <select v-model="search_type" style="width: 120px; height: 50px">
+        <select v-model="search_type" style="width: 120px; height: 45px">
           <option value="item" selected>Item</option>
           <option value="supplier">Supplier</option>
         </select>
       </div>
-      <div class="col-2 w-100">
+      <div class="col-2 w-100" style="padding-right: 0%;">
         <button class="btn-ghost" style="white-space: nowrap" @click="addPO()">
           + PO
         </button>
       </div>
     </div>
 
-    <!-- Table -->
-    <div class="table">
-      <div class="table-header">
-        <div class="row" style="padding-right: 0px">
-          <div class="col-1"></div>
-          <div
-            class="col-4 w-100"
-            style="text-align: right; margin-left: -100px"
-          >
-            Item
-          </div>
-          <div class="col-1 w-100" style="margin-left: 14px">Qty</div>
-          <div class="col-2 w-100">Unit</div>
-          <div class="col-3 w-100" style="margin-left: -35px">Min Sup</div>
-          <div class="col-1 w-100" style="margin-left: -35px">Status</div>
-        </div>
-      </div>
-      <div
-        class="row table-item ps-0"
-        v-for="(item, idx) in nearly_items"
-        :key="idx"
-        style="
-          padding-right: 0px;
-          background-color: #303344;
-          border-radius: 10px;
-          margin: 0px;
-          margin-top: 5px;
-          line-height: 20px;
-        "
-      >
-        <div class="col-1">
-          <div class="checkbox-orange" style="position: relative; bottom: 6px">
+    <!-- header -->
+    
+    <div class="table-header AreaPage GridArea" style="line-height:170%;margin-top: 10px;">
+      <div class="CheckBlock"></div>
+      <div class="ItemBlock" >Item</div>
+      <div class="QtyBlock" >Qty</div>
+      <div class="UnitBlock">Unit</div>
+      <div class="MinSupBlock" >Min Sup</div>
+      <div class="StatusBlock" >Status</div>
+    
+    </div>
+    
+    <!-- Item -->
+    <div class="AreaPage ScollItem" style="margin-top: 5px;" >
+      <div v-for="(item, idx) in nearly_items" :key="idx">
+        <div class="table-item GridArea"
+          style="line-height:220%;height:45px; margin: 0px 0px; 10px 0px;" >
+
+          <!-- ChackBox -->
+          <div class="checkbox-orange CheckBlock" >
             <input
               type="checkbox"
-              class="me-3 mt-2"
+              style="position:relative;top:29%;left:30%;"
               :value="item"
               @input="selected_item_vals(item)"
             />
           </div>
-        </div>
-        <div
-          class="col-4 w-100"
-          @click="po_detail(item)"
-          style="
-            text-align: left;
-            font-size: 24px;
-            overflow-x: auto;
-            white-space: nowrap;
-            line-height: 40px;
-            margin-left: -20px;
-          "
-        >
-          {{ item.raw_material_set.name }}
-        </div>
-        <div class="col-1 w-100" style="text-align: right; line-height: 40px">
-          {{ item.raw_material_set.remain }}
-        </div>
-        <div class="col-2 w-100">
-          <p>{{ item.unit_set.unit }}</p>
-        </div>
-        <div
-          class="col-3 w-100"
-          style="
-            text-align: left;
-            overflow-x: auto;
-            white-space: nowrap;
-            line-height: 40px;
-          "
-        >
-          {{ item.supplier_set.company_name }}
-        </div>
-        <div class="col-1">
-          <img
-            style="
-              margin-right: 5px;
-              position: relative;
-              bottom: 3px;
-              height: 45px;
-              width: 45px;
-              transform: rotate(180deg);
-            "
-            :src="
-              $store.state.raw_material.status_image[
-                item.raw_material_set.status
-              ]['img']
-            "
-            alt="img"
-          />
+          <!-- Name Item -->
+          <div class="ItemBlock"
+            @click="po_detail(item)"
+            style="text-align: left;overflow-x: auto;white-space: nowrap;">
+            {{ item.raw_material_set.name }}
+          </div>
+          <!-- Qty -->
+          <div class="QtyBlock" style="">{{ item.raw_material_set.remain }}</div>
+          <!-- Unit -->
+          <div class="UnitBlock">{{ item.unit_set.unit }}</div>
+          <!-- Min Sup -->
+          <div class="MinSupBlock">{{ item.supplier_set.company_name }}</div>
+          <!-- Status -->
+          <div class="StatusBlock">
+            <img
+              style="height: 35px;position:relative;bottom:2px;"
+              :src="$store.state.raw_material.status_image[item.raw_material_set.status]['img']"
+              alt="img"
+            />
+          </div>
+
+
         </div>
       </div>
+      
+
     </div>
+      
     <!-- Dropdown List -->
     <div class="dropdown-list" v-if="dropdown_status">
       <div class="row">
@@ -260,6 +223,7 @@ export default {
   background: transparent;
   border: none;
   border-bottom: 1px solid;
+  
 }
 .item-in-row {
   text-align: center;
@@ -275,14 +239,12 @@ export default {
 }
 .btn-ghost {
   white-space: nowrap;
-  width: 100px;
-  height: 50px;
+  width: 100%;
+  height: 45px;
   border: 1px solid #65b0f6;
   color: #65b0f6;
 }
-.table {
-  margin-top: 15px;
-}
+
 .btn-dropdown {
   border: 0;
   width: 100%;
@@ -302,5 +264,65 @@ span.icon-dropdown {
   margin-top: 10px;
   width: 20px;
   height: 20px;
+}
+.AreaPage {
+  width: 96%;
+  margin: auto;
+  height: 45px;
+}
+.ScollItem {
+  height:740px;
+  border-radius:9px;
+  white-space: nowrap;
+  overflow-y: auto;
+  padding-top: 0%;
+
+}
+
+.GridArea {
+  display: inline-grid;
+  grid-template-columns: 6% 44% 10% 10% 20% 10%;
+
+}
+
+.CheckBlock {
+  width: 100%;
+
+}
+.ItemBlock {
+  width:97%;
+  margin-right:3%;
+
+}
+.QtyBlock {
+  width:84%;
+  margin-right:7%;
+  margin-left:7%;
+
+}
+.UnitBlock {
+  width:84%;
+  margin-right:7%;
+  margin-left:7%;
+
+}
+.MinSupBlock {
+  width:84%;
+  margin-right:7%;
+  margin-left:7%;
+  overflow-x: auto;
+  white-space: nowrap;
+
+}
+.StatusBlock {
+  width: 100%;
+
+}
+
+.checkbox-orange input:checked::after {
+  top:-55%;
+  left: 5%;
+
+
 }
 </style>
