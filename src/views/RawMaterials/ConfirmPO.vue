@@ -1,218 +1,245 @@
 <template>
   <div>
-    <div class="show-pickup-popup">
-      <!-- Nav -->
-      <div class="row" style="margin-top: 10px;">
-        <div class="col-11 txt-for-add">{{item.name}}</div>
-        <div class="col-1 w-100">
-          <img
-            @click="$emit('show_status')"
-            src="../../assets/icon/Union.png"
+    <!-- nav bar -->
+    <nav-app :url_name="'PO'">Confirm&#160;PO</nav-app>
+    <img src="../../assets/icon/save.png" class="image-save" @click="save" />
+    <div v-for="po in this.$store.state.raw_material.all_po_selected" :key="po">
+      <!-- Head Page -->
+      <div class="row head-page">
+        <!-- Left -->
+        <div class="col-6 w-100" style="margin-left: 30px">
+          <!-- Supplier -->
+          <div class="col-12 w-100 line-col">
+            Supplier&nbsp;&nbsp;:&nbsp;{{ po.supplier.company_name }}
+          </div>
+        </div>
+        <!-- Right -->
+        <div class="col-6 w-100" style="margin-right: 30px">
+          <!-- Payment -->
+          <div class="col-12 w-100 line-col">
+            Payment&nbsp;:&nbsp;
+            <select
+              v-model="
+                this.$store.state.raw_material.all_receipt[
+                  this.$store.state.raw_material.all_po_selected.indexOf(po)
+                ].payment
+              "
+              class="input-payment"
+            >
+              <option value="" selected disabled style="color: white">
+                payment
+              </option>
+              <option
+                v-for="payment in payments"
+                :key="payment.id"
+                :value="payment.payment"
+              >
+                {{ payment.payment }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!-- Table -->
+      <div class="table">
+        <!-- Table Header -->
+        <div class="table-header">
+          <div
+            class="row"
             style="
-              top: 15px;
-              right: 10px;
-              position: absolute;
-              width: 25px;
-              height: 25px;
+              color: white;
+              text-align: left;
+              margin-top: 10px;
             "
-          />
-        </div>
-      </div>
-      <div class="content-wrapper">
-        <div class="row">
-          <div class="col-5 w-100">
-            <!-- Select Image -->
-            <label id="select_img">
-              <img :src="show_img" class="image" />
-            </label>
-          </div>
-          <div class="col-7 w-100 right-wrapper">
-            <!-- Qty -->
-            <div class="row" style="margin-top: 20px;">
-              <div class="col-12">
-                <p class="font-pickup-popup">
-                  <span style="font-size: 28px;">Qty</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ item.remain }}&nbsp;&nbsp;&nbsp;&nbsp; {{ item.unit_set.unit }}
-                </p>
-              </div>
-            </div>
-            <!-- Pickup Amount -->
-            <div class="row" style="margin-top: 20px;">
-              <div class="col-12">
-                <p class="font-pickup-popup">
-                  <span style="font-size: 28px;">Pickup</span>&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <input
-                    class="pickup-input"
-                    type="text"
-                    :disabled="item.remain == 0"
-                    v-model="pickup_amount"
-                    @click="pickup_amount = null"
-                  />
-                </p>
-              </div>
-            </div>
-            <p v-if="parseInt(pickup_amount) > item.remain" style="color: #ff6d6d; font-size: 20px; margin: -5px 0px 0px 60px;">Not Enough Stuff</p>
+          >
+            <div class="col-6 w-100" style="padding-left: 30px">Name</div>
+            <div class="col-1 w-100">Qty</div>
+            <div class="col-1 w-100">Unit</div>
+            <div class="col-2 w-100" style="text-align: center">Price</div>
+            <div class="col-2 w-100" style="margin-left: -10px">Amount</div>
           </div>
         </div>
+        <!-- Table Item loop -->
+        <div
+          class="row table-item"
+          style="margin-left: 0px; line-height: 20px;"
+          v-for="recept_detail in po.recept_detail"
+          :key="recept_detail"
+        >
+          <div
+            class="col-6 w-100 line-item"
+            style="padding-left: 30px; text-align: left; white-space: nowrap; overflow-x:auto;"
+          >
+            {{ recept_detail.raw_material_set.name }}
+          </div>
+          <div class="col-1 w-100 line-item" style="margin-left: -5px">
+            {{ parseInt(recept_detail.raw_material_set.must_buy) }}
+          </div>
+          <div class="col-1 w-100 line-item" style="margin-right: -10px">
+            {{ recept_detail.unit_set.unit }}
+          </div>
+          <div
+            class="col-2 w-100 line-item"
+            style="text-align: center; margin-left: 10px"
+          >
+            {{ recept_detail.last_price }}
+          </div>
+          <div class="col-2 w-100 line-item">{{ parseInt(calc(recept_detail)) }}</div>
+        </div>
+        <!-- Discount -->
+        <div class="row table-item" style="margin-left: 0px; line-height: 20px;">
+          <div class="col-12 w-100" style="margin-top: 10px">
+            Discount&nbsp;<span style="width: 200px">{{
+              calc_discount_price(po.recept_detail)
+            }}</span
+            >&nbsp;บาท
+          </div>
+        </div>
+        <!-- Total Price -->
+        <div class="row table-item" style="margin-left: 0px; line-height: 20px;">
+          <div class="col-12 w-100" style="margin-top: 10px">
+            Total Price&nbsp;<span style="width: 200px">{{
+              calc_total_price(po)
+            }}</span
+            >&nbsp;บาท
+          </div>
+        </div>
       </div>
-      <div>
-        <button :disabled="parseInt(this.pickup_amount) > item.remain" class="btn-confirm" @click="confirm">
-          <span class="icon-save"></span>Confirm
-        </button>
-      </div>
+      <hr style="background-color: white; height: 5px" />
     </div>
-    <!-- Card Popup -->
-    <div class="card" :class="{ 'card-active': alert }">
-      <div class="icon">
-        <img src="../../assets/icon/btn-pass.png" />
-      </div>
-      <div class="main-text">Pickup successfully</div>
-    </div>
+    <SavePopup :alert="alert" />
   </div>
 </template>
 
-
 <script>
+import { api_raw_material } from "../../api/api_raw_material";
+import SavePopup from "../../components/main_component/SavePopup.vue"
+import SearchBar from "../../components/materials/SearchBar.vue";
+import NavApp from "../../components/main_component/NavApp.vue";
+import Table from "../../components/main_component/Table.vue";
+import CheckBoxWhite from "../../components/main_component/CheckBoxWhite.vue";
+
 export default {
-  name: "PickupPopup",
-  props: ["item"],
+  components: {
+    SavePopup,
+    SearchBar,
+    NavApp,
+    Table,
+    CheckBoxWhite,
+  },
+  mounted() {
+    api_raw_material.get("category").then((response) => {
+      console.log(response.data, "categories");
+      this.categories = response.data;
+    });
+    api_raw_material.get("unit").then((response) => {
+      this.all_unit = response.data;
+    });
+    api_raw_material.get("raw-material/").then((response) => {
+      this.all_raw_material = response.data;
+    });
+    console.log(this.$store.state.raw_material.all_receipt, "all receipt");
+    console.log(
+      this.$store.state.raw_material.all_po_selected,
+      "all_po_selected"
+    );
+    console.log(
+      this.$store.state.raw_material.all_receipt_detail,
+      "all receipt detail"
+    );
+  },
+
   data() {
     return {
-      show_status: false,
       alert: false,
-      show_img: this.item.img,
-      name: "",
-      qty: 0,
-      pickup_amount: 0,
+      all_raw_material: [],
+      all_unit: [],
+      categories: [],
+      payments: [
+        { id: 1, payment: "cash" },
+        { id: 2, payment: "transfer" },
+      ],
+      payment_id: null,
     };
   },
-  mounted() {},
   methods: {
-    onFileChange(e) {
-      this.show_img = e.target.files[0];
-      if (this.show_img) {
-        const reader = new FileReader();
-        reader.onload = (e) => (this.show_img = e.target.result);
-        reader.readAsDataURL(this.show_img);
-      }
+    calc(item) {
+      item.total_price = item.last_price * item.raw_material_set.must_buy;
+      return item.total_price;
     },
-    confirm() {
-        this.alert = true
-        setTimeout(() => {
-          this.alert = false;
-        }, 2000);
-        this.$emit("confirm", this.pickup_amount, this.item)
-        this.name = ''
-        this.qty = 0
-        this.pickup_amount = 0
-    }
+    calc_total_price(item) {
+      var sum = 0;
+      item.recept_detail.forEach((el) => {
+        sum += el.total_price;
+      });
+      item.total_price = sum;
+      return sum;
+    },
+    calc_discount_price(arr) {
+      var sum = 0
+      for (const item of arr) {
+        sum += item.discount
+      }
+      return sum
+    },
+    select_payment(item) {
+      console.log(item);
+    },
+    async save() {
+      if (this.$store.state.raw_material.all_receipt.some(item => item.payment != null)) {
+        this.$store.state.raw_material.all_receipt.forEach((receipt) => {
+          api_raw_material.post("/receipt/", receipt).then((res) => {
+            console.log(res.data, "receipt data");
+            this.$store.state.raw_material.all_receipt_detail.forEach((receipt_detail) => {
+                if (res.data.supplier_id == receipt_detail.supplier_id) {
+                  receipt_detail.receipt_raw_material_id = res.data.id;
+                  setTimeout(() => {
+                    api_raw_material.post("/receipt-detail/", receipt_detail).then((res) => {
+                      this.alert = true
+                      setTimeout(() => {
+                        this.alert = false
+                        this.$router.push({ name: "RawMaterials"})
+                      }, 2000)
+                      console.log(res.data, 'receipt_detail');
+                    });
+                  }, 1000)
+                }
+              }
+            );
+          });
+        });
+      } else {
+        alert('Warning')
+      }
+      
+    },
   },
+  computed: {},
 };
 </script>
 
 <style scoped>
-.font-pickup-popup {
-  font-size: 24px;
-  font-weight: bold;
+.image-save {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+}
+.line-item {
+  margin-top: 10px;
+}
+.line-col {
   text-align: left;
 }
-.card {
-    width: 542px;
-    height: 319px
-}
-.btn-confirm {
-  white-space: nowrap;
-  width: 167px;
-  height: 45px;
-  margin-top: 15px;
-  border: 1px solid #50d1aa;
-  box-sizing: border-box;
-  border-radius: 10px;
-  font-size: 24px;
-  padding-right: 3%;
-  color: #50d1aa;
-  background: transparent;
-  text-align: right;
-  line-height: 27px;
-}
-span.icon-save {
-  background: url("../../assets/icon/correct.png") no-repeat transparent;
-  transform: rotate(180deg);
-  background-size: 30px;
-  float: left;
-  margin-left: -4px;
-  width: 30px;
-  height: 30px;
-}
-.pickup-input {
-  width: 121px;
-  height: 50px;
+.input-payment {
+  width: 162px;
+  height: 36px;
   background: #717171;
   border-radius: 10px;
 }
-.right-wrapper {
-  text-align: left;
-  width: 299px;
-  height: 210px;
-  font-size: 30px;
+.head-page {
+  width: 672px;
+  margin-left: 15px;
+  font-size: 28px;
   color: white;
-  margin: 20px 20px 0px -10px;
-}
-.content-wrapper {
-  width: 575px;
-  height: 205px;
-  margin: 20px 20px 5px 20px;
-  background: #303344;
-  border-radius: 30px;
-}
-.show-pickup-popup {
-  width: 616.86px;
-  height: 385px;
-  top: 20%;
-  left: 12%;
-  position: absolute;
-  background-color: #252836;
-  border: 2px solid #ea7c69;
-  border-radius: 20px;
-}
-.image {
-  width: 160px;
-  height: 160px;
-  border-radius: 25px;
-}
-#select_img {
-  width: 160px;
-  height: 160px;
-  border-radius: 25px;
-  margin: 20px 0px 0px -10px;
-  background-color: #717171;
-}
-.txt-for-add {
-  font-weight: bold;
-  font-size: 36px;
-  line-height: 56px;
-  text-align: center;
-  width: 85%;
-  color: white;
-  white-space: nowrap;
-  overflow-x: auto;
-  margin-left: 12%;
-}
-.edit-block {
-  position: absolute;
-  width: 74px;
-  height: 28.23px;
-  left: 55px;
-  top: 280px;
-  background-color: #c4c4c4;
-  border-radius: 5px;
-  background-image: url("../../assets/icon/el_camera.png");
-  background-position: 10% 50%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  font-size: 18px;
-  color: #000000;
-  font-weight: bold;
-  text-indent: 30px;
-  background-size: 25px;
 }
 </style>

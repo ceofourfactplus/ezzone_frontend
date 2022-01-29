@@ -297,8 +297,8 @@ export default {
       }
       console.log(this.img, "img");
     },
-    switch_active(val) {
-      this.status = val
+    switch_active() {
+      this.status = !this.status
     },
     select_point_promotion() {
       this.point_promotions_id = this.point_promotion_set.id
