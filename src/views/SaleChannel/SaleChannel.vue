@@ -188,7 +188,7 @@ export default {
   },
   methods: {
     get_sale_channel() {
-      api_product.get("sale-channel/").then((response) => {
+      api_product.get("read-sale-channel/").then((response) => {
         this.sale_channels = response.data;
         this.show_channel = response.data;
       });
