@@ -1,23 +1,9 @@
 <template>
   <div>
     <!-- nav bar -->
-    <nav-app :url_name="'PONotice'" :rm_menu="true">Purchase&#160;Order</nav-app>
-    <div class="row" style="width: 90%; margin-left: 25px">
-      <div class="col-8 wrap-search w-100">
-        <SearchBar @search="search_raw" style="width: 98%" />
-      </div>
-      <div class="col-2 w-100" style="padding-left: 0px">
-        <button
-          class="btn-ghost-b"
-          style="width: 100%; height: 50px"
-          @click="add_po = true"
-        >
-          +&#160;PO
-        </button>
-      </div><template>
-  <div>
-    <!-- nav bar -->
-    <nav-app :url_name="'RawMaterials'" :rm_menu="true">Purchase&#160;Order</nav-app>
+    <nav-app :url_name="'PONotice'" :rm_menu="true"
+      >Purchase&#160;Order</nav-app
+    >
     <div class="row" style="width: 90%; margin-left: 25px">
       <div class="col-8 wrap-search w-100">
         <SearchBar @search="search_raw" style="width: 98%" />
@@ -31,429 +17,539 @@
           +&#160;PO
         </button>
       </div>
-      <div class="col-2 w-100">
-        <button
-          @click="confirm"
-          class="btn-ghost-b"
-          style="width: 120px; height: 50px;padding-left: 16%; text-align: left;"
-        >
-          Confirm
-        </button>
-      </div>
-    </div>
-
-    <!-- table -->
-    <div class="table mt-3" style="height: 100%">
-      <div class="table-header" style="height:45px;line-height: 40px; font-size: 24px;padding-left: 8px;padding-right: 8px;">
-        <!-- Table Head -->
-        <div class="row" style="line-height:100%">
-          <div class="col-1 w-100">
-            <div class="checkbox-white">
-              <input
-                type="checkbox"
-                :value="true"
-                style="left: 15px;"
-                @input="selectAllItem"
-              />
+      <template>
+        <div>
+          <!-- nav bar -->
+          <nav-app :url_name="'RawMaterials'" :rm_menu="true"
+            >Purchase&#160;Order</nav-app
+          >
+          <div class="row" style="width: 90%; margin-left: 25px">
+            <div class="col-8 wrap-search w-100">
+              <SearchBar @search="search_raw" style="width: 98%" />
+            </div>
+            <div class="col-2 w-100" style="padding-left: 0px">
+              <button
+                class="btn-ghost-b"
+                style="width: 100%; height: 50px"
+                @click="add_po = true"
+              >
+                +&#160;PO
+              </button>
+            </div>
+            <div class="col-2 w-100">
+              <button
+                @click="confirm"
+                class="btn-ghost-b"
+                style="
+                  width: 120px;
+                  height: 50px;
+                  padding-left: 16%;
+                  text-align: left;
+                "
+              >
+                Confirm
+              </button>
             </div>
           </div>
-          <div class="col-7 w-100">Item</div>
-          <div class="col-1 w-100">Qty.</div>
-          <div class="col-1 w-100" style="right:-10px;position:relative;">Unit</div>
-          <div class="col-2 w-100" style="right:-10px;position:relative;">Price</div>
-        </div>
-      </div>
-      <div style="overflow-x: auto; height: 650px">
-        <div v-for="recept in all_recept" :key="recept">
-          <!-- Table Item Head -->
-          <div class="table-item" style="height:45px;padding-top:0%; padding-bottom:0%;">
+
+          <!-- table -->
+          <div class="table mt-3" style="height: 100%">
             <div
-              class="row"
+              class="table-header"
               style="
-                width: 100%;
-                margin-left: 0px;
-                text-align: center;
-                font-size: 28px;
-                font-weight: bold;
-                position: relative;
-                line-height: 150%;
+                height: 45px;
+                line-height: 40px;
+                font-size: 24px;
+                padding-left: 8px;
+                padding-right: 8px;
               "
             >
-              <div class="col-1 w-100">
-                <div class="checkbox-orange">
-                  <input
-                    type="checkbox"
-                    style="margin-top: 8px; right: 0px"
-                    :id="recept.supplier.company_name"
-                    :value="recept.supplier.company_name"
-                    @input="selectAllItemInSupplier(recept)"
-                  />
+              <!-- Table Head -->
+              <div class="row" style="line-height: 100%">
+                <div class="col-1 w-100">
+                  <div class="checkbox-white">
+                    <input
+                      type="checkbox"
+                      :value="true"
+                      style="left: 15px"
+                      @input="selectAllItem"
+                    />
+                  </div>
+                </div>
+                <div class="col-7 w-100">Item</div>
+                <div class="col-1 w-100">Qty.</div>
+                <div
+                  class="col-1 w-100"
+                  style="right: -10px; position: relative"
+                >
+                  Unit
+                </div>
+                <div
+                  class="col-2 w-100"
+                  style="right: -10px; position: relative"
+                >
+                  Price
                 </div>
               </div>
-              <div
-                class="col-6 w-100"
-                style="margin-top: -1px; text-align: left;"
-              >
-                <label :for="recept.supplier.company_name">
-                  {{ recept.supplier.company_name }}</label
-                >
-              </div>
-              <div class="col-1 w-100"></div>
-              <div class="col-4 w-100">
-                <p
-                  style="font-size: 28px; font-weight: 800"
-                >
-Total  {{ recept.total_price }}</p
-                >
-              </div>
             </div>
-          </div>
-          <!-- Table Item -->
-          <div
-            v-for="item in recept.recept_detail"
-            :key="item.id"
-            class="table-item" style="height:45px;padding-top:0%; padding-bottom:0%;"
-          >
-            <div class="row" style="width: 100%; margin-left: 0px;position: relative; bottom: 9px;line-height:320%;">
-              <div
-                class="col-8 w-100"
-              >
-                <div class="row">
-                  <div class="col-2 w-100"></div>
-                  <div class="col-10 w-100" style="text-align: left;white-space:nowrap;overflow-x:auto;text-align: left">
-                    <span>
+            <div style="overflow-x: auto; height: 650px">
+              <div v-for="recept in all_recept" :key="recept">
+                <!-- Table Item Head -->
+                <div
+                  class="table-item"
+                  style="height: 45px; padding-top: 0%; padding-bottom: 0%"
+                >
+                  <div
+                    class="row"
+                    style="
+                      width: 100%;
+                      margin-left: 0px;
+                      text-align: center;
+                      font-size: 28px;
+                      font-weight: bold;
+                      position: relative;
+                      line-height: 150%;
+                    "
+                  >
+                    <div class="col-1 w-100">
                       <div class="checkbox-orange">
                         <input
                           type="checkbox"
-                          :id="item.raw_material_set.name"
-                          style="display: inline-block; top: 4px"
-                          :value="item"
-                          v-model="selected"
-                          class="ms-2"
+                          style="margin-top: 8px; right: 0px"
+                          :id="recept.supplier.company_name"
+                          :value="recept.supplier.company_name"
+                          @input="selectAllItemInSupplier(recept)"
                         />
-                        <label
-                          :for="item.raw_material_set.name"
-                          class="ms-3"
-                          @click="showPoPopup(item)"
-                        >
-                          {{ item.raw_material_set.name }}
-                        </label>
                       </div>
-                    </span>
+                    </div>
+                    <div
+                      class="col-6 w-100"
+                      style="margin-top: -1px; text-align: left"
+                    >
+                      <label :for="recept.supplier.company_name">
+                        {{ recept.supplier.company_name }}</label
+                      >
+                    </div>
+                    <div class="col-1 w-100"></div>
+                    <div class="col-4 w-100">
+                      <p style="font-size: 28px; font-weight: 800">
+                        Total {{ recept.total_price }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Table Item -->
+                <div
+                  v-for="item in recept.recept_detail"
+                  :key="item.id"
+                  class="table-item"
+                  style="height: 45px; padding-top: 0%; padding-bottom: 0%"
+                >
+                  <div
+                    class="row"
+                    style="
+                      width: 100%;
+                      margin-left: 0px;
+                      position: relative;
+                      bottom: 9px;
+                      line-height: 320%;
+                    "
+                  >
+                    <div class="col-8 w-100">
+                      <div class="row">
+                        <div class="col-2 w-100"></div>
+                        <div
+                          class="col-10 w-100"
+                          style="
+                            text-align: left;
+                            white-space: nowrap;
+                            overflow-x: auto;
+                            text-align: left;
+                          "
+                        >
+                          <span>
+                            <div class="checkbox-orange">
+                              <input
+                                type="checkbox"
+                                :id="item.raw_material_set.name"
+                                style="display: inline-block; top: 4px"
+                                :value="item"
+                                v-model="selected"
+                                class="ms-2"
+                              />
+                              <label
+                                :for="item.raw_material_set.name"
+                                class="ms-3"
+                                @click="showPoPopup(item)"
+                              >
+                                {{ item.raw_material_set.name }}
+                              </label>
+                            </div>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="col-1 w-100"
+                      style="margin: auto; text-align: center"
+                      @click="showPoPopup(item)"
+                    >
+                      {{ item.raw_material_set.must_buy }}
+                    </div>
+                    <div
+                      class="col-1 w-100"
+                      style="
+                        margin: auto;
+                        text-align: center;
+                        margin-right: -14px;
+                      "
+                      @click="showPoPopup(item)"
+                    >
+                      {{ item.unit_set.unit }}
+                    </div>
+                    <div
+                      class="col-2 w-100"
+                      style="
+                        margin: auto;
+                        text-align: center;
+                        padding: 0px;
+                        margin-left: 20px;
+                      "
+                      @click="showPoPopup(item)"
+                    >
+                      {{ item.last_price * item.raw_material_set.must_buy }}
+                    </div>
                   </div>
                 </div>
               </div>
-              <div
-                class="col-1 w-100"
-                style="margin: auto; text-align: center"
-                @click="showPoPopup(item)"
-              >
-                {{ item.raw_material_set.must_buy }}
-              </div>
-              <div
-                class="col-1 w-100"
-                style="margin: auto; text-align: center; margin-right: -14px;"
-                @click="showPoPopup(item)"
-              >
-                {{ item.unit_set.unit }}
-              </div>
-              <div
-                class="col-2 w-100"
-                style="
-                  margin: auto;
-                  text-align: center;
-                  padding: 0px;
-                  margin-left: 20px;
-                "
-                @click="showPoPopup(item)"
-              >
-                {{ item.last_price * item.raw_material_set.must_buy }}
-              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Save Popup -->
-    <SavePopup :alert="alert" />
-    <!-- add PO -->
-    <div class="blur" v-if="add_po">
-      <div
-        class="card"
-        :class="{ 'card-active': add_po }"
-        style="background-color: #252836"
-      >
-        <!-- nav popup -->
-        <div class="row mt-3">
-          <div class="col-2 w-100">
-            <img src="../../assets/icon/save.png" alt="" @click="create_po()" />
-          </div>
-          <div class="col-8 w-100">
-            <h2 style="color: #fff; font-size: 36px">PO Item</h2>
-          </div>
-          <div class="col-2 w-100">
-            <img
-              src="../../assets/icon/delete.png"
-              @click="add_po = false"
-              style="width: 30px;"
-            />
-          </div>
-        </div>
-
-        <div class="frame f-1">
-          <div class="row">
-            <div style="display: inline;">
-                <div class="po-item-label">Name</div>
-                <div style="margin-left: 96px;" class="po-item-label">:</div>
-            </div>
-            <input
-              class="g-s"
-              type="text"
-              style="width: 270px"
-              v-model="raw_material"
-            />
-            <select v-model="raw_material" class="g-e" style="width: 30px">
-              <option
-                v-for="item in all_raw_material"
-                :key="item.id"
-                :value="item.name"
-              >
-                {{ item.name }}
-              </option>
-            </select>
-          </div>
-          <div class="row" style="margin-top: 15px;">
-            <div style="display: inline;">
-                <div class="po-item-label">Supplier</div>
-                <div style="margin-left: 69px;" class="po-item-label">:</div>
-            </div>
-            <input
-              class="g-s"
-              type="text"
-              v-model="supplier"
-              style="width: 270px"
-            /><select v-model="supplier" class="g-e" style="width: 30px">
-              <option
-                v-for="sup in all_supplier"
-                :key="sup.id"
-                :value="sup.company_name"
-              >
-                {{ sup.company_name }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="frame f-2">
-          <div class="row">
-              <div style="display: inline;">
-                <div class="po-item-label">Qty</div>
-                <div style="margin-left: 125px;" class="po-item-label">:</div>
-              </div>
-            <input
-              v-model="amount"
-              type="number"
-              style="text-align: right"
-            />
-            <input
-              type="text"
-              style="width: 110px; margin-left: 10px"
-              class="g-s"
-              v-model="unit"
-            />
-            <select style="width: 30px" v-model="unit" class="g-e">
-              <option
-                v-for="unit in all_unit"
-                :key="unit.id"
-                :value="unit.unit"
-              >
-                {{ unit.unit }}
-              </option>
-            </select>
-          </div>
-          <div class="row" style="margin-top: 15px;">
-            <div style="display: inline;">
-                <div class="po-item-label">Price</div>
-                <div style="margin-left: 108px;" class="po-item-label">:</div>
-            </div>
-            <input
-              v-model="price"
-              type="text"
-              style="text-align: right"
-            />
-            <label for="total_cost">
-              <p>บาท</p>
-            </label>
-          </div>
-          <div class="row">
-            <div style="display: inline;">
-                <div class="po-item-label">Discount</div>
-                <div style="margin-left: 66px;" class="po-item-label">:</div>
-            </div>
-            <input
-              id="name"
-              type="text"
-              style="text-align: right"
-              v-model="discount"
-            /><label for="total_cost">
-              <p>บาท</p>
-            </label>
-          </div>
-          <div class="row">
-            <div style="width: 540px; text-align: left">
-                <div class="po-item-label">Total Cost</div>
-                <div class="po-item-label" style="margin-left: 52px;">:</div>
-                <div class="po-item-label" style="margin-left: 15px;">{{ cal_total_cost }} บาท</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PO Popup -->
-    <div class="po-popup">
-      <div class="blur" v-if="po_popup">
-        <div
-          class="card"
-          :class="{ 'card-active': po_popup }"
-          style="background-color: #252836; height: 690px"
-        >
-          <!-- Nav -->
-          <div class="row w-100" style="height: 100px;margin:0px;line-height:600%;">
-            <div class="col-2 w-100" @click="edit()">
-              <img
-                src="../../assets/icon/save.png"
-                style="margin: 5px 0px 0px 10px"
-              />
-            </div>
-            <div class="col-8 w-100 nav-txt" style="white-space:nowrap;overflow-x:auto;text-align: left">
-              {{ po_popup_item.raw_material_set.name }}
-            </div>
-            <div class="col-2 w-100" @click="po_popup = false">
-              <img
-                src="../../assets/icon/delete.png"
-                style="width: 29px; height: 32px; margin: 5px 0px 0px 0px"
-              />
-            </div>
-          </div>
-          <!-- Over Wrapper -->
-          <div class="row" style="height:38%;">
-            <!-- Image -->
-            <div class="col-4 w-100">
-              <img :src="po_popup_item.raw_material_set.img"
-                class="image"
-              />
-            </div>
-            <!-- Item Detail -->
-            <div class="col-8 item-detail">
-              <!-- Name --> 
-              <div class="row">
-                <div class="col-12 line-col" style="margin-top: 10px;white-space:nowrap;overflow-x:auto;width:300px;">
-                  {{ po_popup_item.raw_material_set.name }}
+          <!-- Save Popup -->
+          <SavePopup :alert="alert" />
+          <!-- add PO -->
+          <div class="blur" v-if="add_po">
+            <div
+              class="card"
+              :class="{ 'card-active': add_po }"
+              style="background-color: #252836"
+            >
+              <!-- nav popup -->
+              <div class="row mt-3">
+                <div class="col-2 w-100">
+                  <img
+                    src="../../assets/icon/save.png"
+                    alt=""
+                    @click="create_po()"
+                  />
+                </div>
+                <div class="col-8 w-100">
+                  <h2 style="color: #fff; font-size: 36px">PO Item</h2>
+                </div>
+                <div class="col-2 w-100">
+                  <img
+                    src="../../assets/icon/delete.png"
+                    @click="add_po = false"
+                    style="width: 30px"
+                  />
                 </div>
               </div>
-              <!-- Category -->
-              <div class="row">
-                <div class="col-12 line-col">
-                  Category&nbsp;:&nbsp;{{ category }}
-                </div>
-              </div>
-              <!-- Status -->
-              <div class="row">
-                <div class="col-12 line-col">
-                  Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;
-                  <img style="margin-left: 10px;" :src="$store.state.raw_material.status_image[po_popup_item.raw_material_set.status]['img']" />
-                </div>
-              </div>
-              <!-- Supplier -->
-              <div class="row">
-                <div class="col-12 line-col">
-                  Supplier&nbsp;&nbsp;&nbsp;:&nbsp;
+
+              <div class="frame f-1">
+                <div class="row">
+                  <div style="display: inline">
+                    <div class="po-item-label">Name</div>
+                    <div style="margin-left: 96px" class="po-item-label">:</div>
+                  </div>
+                  <input
+                    class="g-s"
+                    type="text"
+                    style="width: 270px"
+                    v-model="raw_material"
+                  />
                   <select
-                    style="height: 40px"
-                    v-model="po_popup_item.supplier_id"
+                    v-model="raw_material"
+                    class="g-e"
+                    style="width: 30px"
                   >
                     <option
-                      style="background-color: black;"
-                      v-for="supplier in all_supplier"
-                      :key="supplier.id"
-                      :value="supplier.id"
+                      v-for="item in all_raw_material"
+                      :key="item.id"
+                      :value="item.name"
                     >
-                      {{ supplier.company_name }}
+                      {{ item.name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="row" style="margin-top: 15px">
+                  <div style="display: inline">
+                    <div class="po-item-label">Supplier</div>
+                    <div style="margin-left: 69px" class="po-item-label">:</div>
+                  </div>
+                  <input
+                    class="g-s"
+                    type="text"
+                    v-model="supplier"
+                    style="width: 270px"
+                  /><select v-model="supplier" class="g-e" style="width: 30px">
+                    <option
+                      v-for="sup in all_supplier"
+                      :key="sup.id"
+                      :value="sup.company_name"
+                    >
+                      {{ sup.company_name }}
                     </option>
                   </select>
                 </div>
               </div>
+              <div class="frame f-2">
+                <div class="row">
+                  <div style="display: inline">
+                    <div class="po-item-label">Qty</div>
+                    <div style="margin-left: 125px" class="po-item-label">
+                      :
+                    </div>
+                  </div>
+                  <input
+                    v-model="amount"
+                    type="number"
+                    style="text-align: right"
+                  />
+                  <input
+                    type="text"
+                    style="width: 110px; margin-left: 10px"
+                    class="g-s"
+                    v-model="unit"
+                  />
+                  <select style="width: 30px" v-model="unit" class="g-e">
+                    <option
+                      v-for="unit in all_unit"
+                      :key="unit.id"
+                      :value="unit.unit"
+                    >
+                      {{ unit.unit }}
+                    </option>
+                  </select>
+                </div>
+                <div class="row" style="margin-top: 15px">
+                  <div style="display: inline">
+                    <div class="po-item-label">Price</div>
+                    <div style="margin-left: 108px" class="po-item-label">
+                      :
+                    </div>
+                  </div>
+                  <input
+                    v-model="price"
+                    type="text"
+                    style="text-align: right"
+                  />
+                  <label for="total_cost">
+                    <p>บาท</p>
+                  </label>
+                </div>
+                <div class="row">
+                  <div style="display: inline">
+                    <div class="po-item-label">Discount</div>
+                    <div style="margin-left: 66px" class="po-item-label">:</div>
+                  </div>
+                  <input
+                    id="name"
+                    type="text"
+                    style="text-align: right"
+                    v-model="discount"
+                  /><label for="total_cost">
+                    <p>บาท</p>
+                  </label>
+                </div>
+                <div class="row">
+                  <div style="width: 540px; text-align: left">
+                    <div class="po-item-label">Total Cost</div>
+                    <div class="po-item-label" style="margin-left: 52px">:</div>
+                    <div class="po-item-label" style="margin-left: 15px">
+                      {{ cal_total_cost }} บาท
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <!-- Under Wrapper -->
-          <div class="row under-wrapper">
-            <!-- Qty -->
-            <div class="col-12 w-100 line-col" style="margin-left: 50px">
-              Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;
-              <input
-                type="text"
-                class="under-wrapper-input"
-                v-model="po_popup_item.raw_material_set.must_buy"
-                @input="calc_total_price(po_popup_item)"
-              />
-              <select
-                style="margin-left: 10px;"
-                class="under-wrapper-input"
-                v-model="po_popup_item.unit_set.id"
-                @change="calc_price_unit(po_popup_item.unit_set.id)"
+
+          <!-- PO Popup -->
+          <div class="po-popup">
+            <div class="blur" v-if="po_popup">
+              <div
+                class="card"
+                :class="{ 'card-active': po_popup }"
+                style="background-color: #252836; height: 690px"
               >
-                <option
-                  style="background-color: black;"
-                  v-for="unit in show_units"
-                  :key="unit.id"
-                  :value="unit.id"
+                <!-- Nav -->
+                <div
+                  class="row w-100"
+                  style="height: 100px; margin: 0px; line-height: 600%"
                 >
-                  {{ unit.unit }}
-                </option>
-              </select>
-            </div>
-            <!-- Price -->
-            <div class="col-12 w-100 line-col" style="margin-left: 50px">
-              Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;
-              <input
-                type="text"
-                class="under-wrapper-input"
-                v-model="po_popup_item.last_price"
-                @input="calc_total_price(po_popup_item)"
-              />
-              บาท
-            </div>
-            <!-- Discount -->
-            <div class="col-12 w-100 line-col" style="margin-left: 50px">
-              Discount&nbsp;&nbsp;&nbsp;:&nbsp;
-              <input
-                type="text"
-                class="under-wrapper-input"
-                v-model="po_popup_item.discount"
-              />
-              บาท
-            </div>
-            <!-- Total Cost -->
-            <div class="col-12 w-100 line-col" style="margin-left: 50px">
-              Total Cost&nbsp;:&nbsp;
-              <input
-                type="text"
-                class="under-wrapper-input"
-                :value="po_popup_item.raw_material_set.must_buy * po_popup_item.last_price"
-              />
-              บาท
+                  <div class="col-2 w-100" @click="edit()">
+                    <img
+                      src="../../assets/icon/save.png"
+                      style="margin: 5px 0px 0px 10px"
+                    />
+                  </div>
+                  <div
+                    class="col-8 w-100 nav-txt"
+                    style="
+                      white-space: nowrap;
+                      overflow-x: auto;
+                      text-align: left;
+                    "
+                  >
+                    {{ po_popup_item.raw_material_set.name }}
+                  </div>
+                  <div class="col-2 w-100" @click="po_popup = false">
+                    <img
+                      src="../../assets/icon/delete.png"
+                      style="width: 29px; height: 32px; margin: 5px 0px 0px 0px"
+                    />
+                  </div>
+                </div>
+                <!-- Over Wrapper -->
+                <div class="row" style="height: 38%">
+                  <!-- Image -->
+                  <div class="col-4 w-100">
+                    <img
+                      :src="po_popup_item.raw_material_set.img"
+                      class="image"
+                    />
+                  </div>
+                  <!-- Item Detail -->
+                  <div class="col-8 item-detail">
+                    <!-- Name -->
+                    <div class="row">
+                      <div
+                        class="col-12 line-col"
+                        style="
+                          margin-top: 10px;
+                          white-space: nowrap;
+                          overflow-x: auto;
+                          width: 300px;
+                        "
+                      >
+                        {{ po_popup_item.raw_material_set.name }}
+                      </div>
+                    </div>
+                    <!-- Category -->
+                    <div class="row">
+                      <div class="col-12 line-col">
+                        Category&nbsp;:&nbsp;{{ category }}
+                      </div>
+                    </div>
+                    <!-- Status -->
+                    <div class="row">
+                      <div class="col-12 line-col">
+                        Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;
+                        <img
+                          style="margin-left: 10px"
+                          :src="
+                            $store.state.raw_material.status_image[
+                              po_popup_item.raw_material_set.status
+                            ]['img']
+                          "
+                        />
+                      </div>
+                    </div>
+                    <!-- Supplier -->
+                    <div class="row">
+                      <div class="col-12 line-col">
+                        Supplier&nbsp;&nbsp;&nbsp;:&nbsp;
+                        <select
+                          style="height: 40px"
+                          v-model="po_popup_item.supplier_id"
+                        >
+                          <option
+                            style="background-color: black"
+                            v-for="supplier in all_supplier"
+                            :key="supplier.id"
+                            :value="supplier.id"
+                          >
+                            {{ supplier.company_name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Under Wrapper -->
+                <div class="row under-wrapper">
+                  <!-- Qty -->
+                  <div class="col-12 w-100 line-col" style="margin-left: 50px">
+                    Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;
+                    <input
+                      type="text"
+                      class="under-wrapper-input"
+                      v-model="po_popup_item.raw_material_set.must_buy"
+                      @input="calc_total_price(po_popup_item)"
+                    />
+                    <select
+                      style="margin-left: 10px"
+                      class="under-wrapper-input"
+                      v-model="po_popup_item.unit_set.id"
+                      @change="calc_price_unit(po_popup_item.unit_set.id)"
+                    >
+                      <option
+                        style="background-color: black"
+                        v-for="unit in show_units"
+                        :key="unit.id"
+                        :value="unit.id"
+                      >
+                        {{ unit.unit }}
+                      </option>
+                    </select>
+                  </div>
+                  <!-- Price -->
+                  <div class="col-12 w-100 line-col" style="margin-left: 50px">
+                    Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;
+                    <input
+                      type="text"
+                      class="under-wrapper-input"
+                      v-model="po_popup_item.last_price"
+                      @input="calc_total_price(po_popup_item)"
+                    />
+                    บาท
+                  </div>
+                  <!-- Discount -->
+                  <div class="col-12 w-100 line-col" style="margin-left: 50px">
+                    Discount&nbsp;&nbsp;&nbsp;:&nbsp;
+                    <input
+                      type="text"
+                      class="under-wrapper-input"
+                      v-model="po_popup_item.discount"
+                    />
+                    บาท
+                  </div>
+                  <!-- Total Cost -->
+                  <div class="col-12 w-100 line-col" style="margin-left: 50px">
+                    Total Cost&nbsp;:&nbsp;
+                    <input
+                      type="text"
+                      class="under-wrapper-input"
+                      :value="
+                        po_popup_item.raw_material_set.must_buy *
+                        po_popup_item.last_price
+                      "
+                    />
+                    บาท
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
 import { api_raw_material } from "../../api/api_raw_material";
-import SavePopup from "../../components/main_component/SavePopup.vue"
+import SavePopup from "../../components/main_component/SavePopup.vue";
 import SearchBar from "../../components/materials/SearchBar.vue";
 import NavApp from "../../components/main_component/NavApp.vue";
 import Table from "../../components/main_component/Table.vue";
@@ -584,17 +680,19 @@ export default {
         this.all_supplier = response.data;
       });
     },
-    calc_price_unit(unit_id){
-      this.po_popup_item.raw_material_set.pricerawmaterial_set.forEach(prm => {
-        if(prm.unit == unit_id) {
-          this.po_popup_item.last_price = prm.last_price
+    calc_price_unit(unit_id) {
+      this.po_popup_item.raw_material_set.pricerawmaterial_set.forEach(
+        (prm) => {
+          if (prm.unit == unit_id) {
+            this.po_popup_item.last_price = prm.last_price;
+          }
         }
-      })
-      this.all_unit.forEach(el => {
-        if(el.id == unit_id){
-          this.po_popup_item.unit_set = el
+      );
+      this.all_unit.forEach((el) => {
+        if (el.id == unit_id) {
+          this.po_popup_item.unit_set = el;
         }
-      })
+      });
     },
     // get_min_sup(item) {
     //   api_raw_material.get("get-min-supplier/"+item.).then((response) => {
@@ -603,7 +701,7 @@ export default {
     // },
     async get_po() {
       await api_raw_material.get("po/").then((response) => {
-        this.po = response.data
+        this.po = response.data;
       });
     },
     get_status(status) {
@@ -661,17 +759,38 @@ export default {
         };
         for (const item of this.po) {
           if (item.supplier_id == supplier.supplier_id) {
-            item.raw_material_set.must_buy = item.raw_material_set.maximum - item.raw_material_set.remain
-            if (item.raw_material_set.m_to_l != null || item.raw_material_set.m_to_l != 0 || item.raw_material_set.m_to_l != '') {
-              item.raw_material_set.must_buy /= item.raw_material_set.m_to_l
-              item.raw_material_set.unit_set = this.find_unit(item.raw_material_set.unit_l_id)
-              item.last_price = this.find_unit_price(item, item.raw_material_set.unit_l_id)
-            } else if(item.raw_material_set.s_to_m != null || item.raw_material_set.s_to_m != 0 || item.raw_material_set.s_to_m != '') {
-              item.raw_material_set.must_buy /= item.raw_material_set.s_to_m
-              item.raw_material_set.unit_set = this.find_unit(item.raw_material_set.unit_m_id)
-              item.last_price = this.find_unit_price(item, item.raw_material_set.unit_m_id)
+            item.raw_material_set.must_buy =
+              item.raw_material_set.maximum - item.raw_material_set.remain;
+            if (
+              item.raw_material_set.m_to_l != null ||
+              item.raw_material_set.m_to_l != 0 ||
+              item.raw_material_set.m_to_l != ""
+            ) {
+              item.raw_material_set.must_buy /= item.raw_material_set.m_to_l;
+              item.raw_material_set.unit_set = this.find_unit(
+                item.raw_material_set.unit_l_id
+              );
+              item.last_price = this.find_unit_price(
+                item,
+                item.raw_material_set.unit_l_id
+              );
+            } else if (
+              item.raw_material_set.s_to_m != null ||
+              item.raw_material_set.s_to_m != 0 ||
+              item.raw_material_set.s_to_m != ""
+            ) {
+              item.raw_material_set.must_buy /= item.raw_material_set.s_to_m;
+              item.raw_material_set.unit_set = this.find_unit(
+                item.raw_material_set.unit_m_id
+              );
+              item.last_price = this.find_unit_price(
+                item,
+                item.raw_material_set.unit_m_id
+              );
             }
-            item.raw_material_set.must_buy = parseInt(item.raw_material_set.must_buy)
+            item.raw_material_set.must_buy = parseInt(
+              item.raw_material_set.must_buy
+            );
             const data = {
               po_id: item.id,
               supplier_id: item.supplier_id,
@@ -699,33 +818,45 @@ export default {
     },
     find_unit(unit_id) {
       this.all_unit.forEach((unit) => {
-        if(unit_id == unit.id) {
-          return unit
+        if (unit_id == unit.id) {
+          return unit;
         }
-      })
+      });
     },
     find_unit_price(item, unit_id) {
-      item.raw_material_set.pricerawmaterial_set.forEach(prm => {
-        if(prm.unit == unit_id) {
-          return prm.last_price
+      item.raw_material_set.pricerawmaterial_set.forEach((prm) => {
+        if (prm.unit == unit_id) {
+          return prm.last_price;
         }
-      })
-      if (item.raw_material_set.m_to_l != null || item.raw_material_set.m_to_l != 0 || item.raw_material_set.m_to_l != '') {
-        return item.last_price * item.raw_material_set.m_to_l
-      } else if(item.raw_material_set.s_to_m != null || item.raw_material_set.s_to_m != 0 || item.raw_material_set.s_to_m != '') {
-        return item.last_price * item.raw_material_set.s_to_m
+      });
+      if (
+        item.raw_material_set.m_to_l != null ||
+        item.raw_material_set.m_to_l != 0 ||
+        item.raw_material_set.m_to_l != ""
+      ) {
+        return item.last_price * item.raw_material_set.m_to_l;
+      } else if (
+        item.raw_material_set.s_to_m != null ||
+        item.raw_material_set.s_to_m != 0 ||
+        item.raw_material_set.s_to_m != ""
+      ) {
+        return item.last_price * item.raw_material_set.s_to_m;
       }
     },
     showPoPopup(item) {
-      this.show_units = []
-      var temp_units = [item.raw_material_set.unit_l_id, item.raw_material_set.unit_m_id, item.raw_material_set.unit_s_id,]
-      temp_units.forEach(unit_id => {
+      this.show_units = [];
+      var temp_units = [
+        item.raw_material_set.unit_l_id,
+        item.raw_material_set.unit_m_id,
+        item.raw_material_set.unit_s_id,
+      ];
+      temp_units.forEach((unit_id) => {
         this.all_unit.forEach((unit) => {
-          if(unit_id == unit.id) {
-            this.show_units.push(unit)
+          if (unit_id == unit.id) {
+            this.show_units.push(unit);
           }
-        })
-      })
+        });
+      });
       this.supplier_id = item.supplier_id;
       this.temp_supplier_id = item.supplier_id;
       this.categories.forEach((el) => {
@@ -739,12 +870,14 @@ export default {
     async edit() {
       this.alert = true;
       setTimeout(() => {
-        this.po_popup = false
+        this.po_popup = false;
         this.alert = false;
-      }, 2000)
-      api_raw_material.put("rm-update/", this.po_popup_item.raw_material_set).then((response) => {
-        console.log(response.data)
-      })
+      }, 2000);
+      api_raw_material
+        .put("rm-update/", this.po_popup_item.raw_material_set)
+        .then((response) => {
+          console.log(response.data);
+        });
       // const data = new FormData();
       // data.append("id", this.po_popup_item.raw_material_set.id);
       // data.append("maximum", this.po_popup_item.raw_material_set.maximum);
@@ -822,8 +955,7 @@ export default {
           }
         }
       }
-      this.po_popup = false
-
+      this.po_popup = false;
     },
     ConvertSlectedToReceptData() {
       console.log(this.po, "convert po");
@@ -867,7 +999,7 @@ export default {
       console.log(this.data, "data");
     },
     async confirm() {
-      this.$store.state.raw_material.all_receipt = []
+      this.$store.state.raw_material.all_receipt = [];
       await this.ConvertSlectedToReceptData();
       this.data.forEach((receipt) => {
         const receipt_raw_material = {
@@ -876,15 +1008,23 @@ export default {
           total_amount: receipt.recept_detail.length,
           payment: null,
           create_by_id: this.$store.state.auth.userInfo.id,
-          update_by_id: this.$store.state.auth.userInfo.id
-        }
-        this.$store.state.raw_material.all_receipt.push(receipt_raw_material)
+          update_by_id: this.$store.state.auth.userInfo.id,
+        };
+        this.$store.state.raw_material.all_receipt.push(receipt_raw_material);
         receipt.recept_detail.forEach((el) => {
-          if (el.raw_material_set.m_to_l != null || el.raw_material_set.m_to_l != 0 || el.raw_material_set.m_to_l != '') {
-              el.raw_material_set.must_buy *= el.raw_material_set.m_to_l
-            } else if(el.raw_material_set.s_to_m != null || el.raw_material_set.s_to_m != 0 || el.raw_material_set.s_to_m != '') {
-              el.raw_material_set.must_buy *= el.raw_material_set.s_to_m
-            }
+          if (
+            el.raw_material_set.m_to_l != null ||
+            el.raw_material_set.m_to_l != 0 ||
+            el.raw_material_set.m_to_l != ""
+          ) {
+            el.raw_material_set.must_buy *= el.raw_material_set.m_to_l;
+          } else if (
+            el.raw_material_set.s_to_m != null ||
+            el.raw_material_set.s_to_m != 0 ||
+            el.raw_material_set.s_to_m != ""
+          ) {
+            el.raw_material_set.must_buy *= el.raw_material_set.s_to_m;
+          }
           const receipt_raw_material_detail = {
             unit_id: el.unit_set.id,
             po_id: el.po_id,
@@ -894,29 +1034,34 @@ export default {
             price: el.last_price - el.discount,
             total_price: el.total_price,
             amount: el.raw_material_set.must_buy,
-            remark: '',
+            remark: "",
             discount: el.discount,
             create_by_id: this.$store.state.auth.userInfo.id,
-            update_by_id: this.$store.state.auth.userInfo.id
-          }
-          this.$store.state.raw_material.all_receipt_detail.push(receipt_raw_material_detail)
-        }) });
-      this.$store.state.raw_material.all_po_selected = this.data
-      this.$router.push({ name: "ConfirmPO"})
+            update_by_id: this.$store.state.auth.userInfo.id,
+          };
+          this.$store.state.raw_material.all_receipt_detail.push(
+            receipt_raw_material_detail
+          );
+        });
+      });
+      this.$store.state.raw_material.all_po_selected = this.data;
+      this.$router.push({ name: "ConfirmPO" });
     },
     calc_total_price(item) {
       this.all_recept.forEach((recept) => {
         if (recept.recept_detail.includes(item)) {
-          var idx = recept.recept_detail.indexOf(item)
-          recept.recept_detail[idx].raw_material_set.remain = item.raw_material_set.remain
-          recept.recept_detail[idx].total_price = parseInt(item.raw_material_set.remain) * parseInt(item.last_price)
+          var idx = recept.recept_detail.indexOf(item);
+          recept.recept_detail[idx].raw_material_set.remain =
+            item.raw_material_set.remain;
+          recept.recept_detail[idx].total_price =
+            parseInt(item.raw_material_set.remain) * parseInt(item.last_price);
         }
-      })
+      });
     },
   },
   watch: {
     "po_popup_item.discount"(discount) {
-      console.log(discount, "discount")
+      console.log(discount, "discount");
     },
   },
   computed: {
@@ -945,8 +1090,8 @@ export default {
 
 <style scoped>
 .po-item-label {
-  display: inline; 
-  font-size: 26px; 
+  display: inline;
+  font-size: 26px;
   color: white;
 }
 .under-wrapper-unput {
@@ -1042,7 +1187,6 @@ export default {
   width: 30px;
   padding-left: 9%;
   line-height: 160%;
-
 }
 .checkbox-orange input:checked::after {
   padding-left: 8%;
@@ -1063,7 +1207,6 @@ export default {
   top: 150px;
   border-radius: 24px;
   left: 13%;
-  
 }
 .frame {
   border-radius: 24px;
@@ -1542,7 +1685,7 @@ Total  {{ recept.total_price }}</p
 
 <script>
 import { api_raw_material } from "../../api/api_raw_material";
-import SavePopup from "../../components/main_component/SavePopup.vue"
+import SavePopup from "../../components/main_component/SavePopup.vue";
 import SearchBar from "../../components/materials/SearchBar.vue";
 import NavApp from "../../components/main_component/NavApp.vue";
 import Table from "../../components/main_component/Table.vue";
@@ -1673,8 +1816,8 @@ export default {
         this.all_supplier = response.data;
       });
     },
-    calc_price_unit(unit_id){
-      console.log(unit_id)
+    calc_price_unit(unit_id) {
+      console.log(unit_id);
       // this.po_popup_item.raw_material_set.pricerawmaterial_set.forEach(prm => {
 
       // })
@@ -1686,7 +1829,7 @@ export default {
     // },
     async get_po() {
       await api_raw_material.get("po/").then((response) => {
-        this.po = response.data
+        this.po = response.data;
       });
     },
     get_status(status) {
@@ -1744,7 +1887,8 @@ export default {
         };
         for (const item of this.po) {
           if (item.supplier_id == supplier.supplier_id) {
-            item.raw_material_set.must_buy = item.raw_material_set.maximum - item.raw_material_set.remain
+            item.raw_material_set.must_buy =
+              item.raw_material_set.maximum - item.raw_material_set.remain;
             const data = {
               po_id: item.id,
               supplier_id: item.supplier_id,
@@ -1771,15 +1915,19 @@ export default {
       this.temp_all_recept = all_recept;
     },
     showPoPopup(item) {
-      this.show_units = []
-      var temp_units = [item.raw_material_set.unit_l_id, item.raw_material_set.unit_m_id, item.raw_material_set.unit_s_id,]
-      temp_units.forEach(unit_id => {
+      this.show_units = [];
+      var temp_units = [
+        item.raw_material_set.unit_l_id,
+        item.raw_material_set.unit_m_id,
+        item.raw_material_set.unit_s_id,
+      ];
+      temp_units.forEach((unit_id) => {
         this.all_unit.forEach((unit) => {
-          if(unit_id == unit.id) {
-            this.show_units.push(unit)
+          if (unit_id == unit.id) {
+            this.show_units.push(unit);
           }
-        })
-      })
+        });
+      });
       console.log(item, "item");
       this.supplier_id = item.supplier_id;
       this.temp_supplier_id = item.supplier_id;
@@ -1794,12 +1942,14 @@ export default {
     async edit() {
       this.alert = true;
       setTimeout(() => {
-        this.po_popup = false
+        this.po_popup = false;
         this.alert = false;
-      }, 2000)
-      api_raw_material.put("rm-update/", this.po_popup_item.raw_material_set).then((response) => {
-        console.log(response.data)
-      })
+      }, 2000);
+      api_raw_material
+        .put("rm-update/", this.po_popup_item.raw_material_set)
+        .then((response) => {
+          console.log(response.data);
+        });
       // const data = new FormData();
       // data.append("id", this.po_popup_item.raw_material_set.id);
       // data.append("maximum", this.po_popup_item.raw_material_set.maximum);
@@ -1877,8 +2027,7 @@ export default {
           }
         }
       }
-      this.po_popup = false
-
+      this.po_popup = false;
     },
     ConvertSlectedToReceptData() {
       console.log(this.po, "convert po");
@@ -1930,9 +2079,9 @@ export default {
           total_amount: receipt.recept_detail.length,
           payment: null,
           create_by_id: this.$store.state.auth.userInfo.id,
-          update_by_id: this.$store.state.auth.userInfo.id
-        }
-        this.$store.state.raw_material.all_receipt.push(receipt_raw_material)
+          update_by_id: this.$store.state.auth.userInfo.id,
+        };
+        this.$store.state.raw_material.all_receipt.push(receipt_raw_material);
         receipt.recept_detail.forEach((el) => {
           const receipt_raw_material_detail = {
             receipt_raw_material_id: null,
@@ -1941,26 +2090,31 @@ export default {
             price: el.last_price,
             total_price: el.total_price,
             amount: el.amount,
-            remark: '',
+            remark: "",
             discount: el.discount,
             create_by_id: this.$store.state.auth.userInfo.id,
-            update_by_id: this.$store.state.auth.userInfo.id
-          }
-          this.$store.state.raw_material.all_receipt_detail.push(receipt_raw_material_detail)
-        }) });
-      this.$store.state.raw_material.all_po_selected = this.data
-      this.$router.push({ name: "ConfirmPO"})
+            update_by_id: this.$store.state.auth.userInfo.id,
+          };
+          this.$store.state.raw_material.all_receipt_detail.push(
+            receipt_raw_material_detail
+          );
+        });
+      });
+      this.$store.state.raw_material.all_po_selected = this.data;
+      this.$router.push({ name: "ConfirmPO" });
     },
     calc_total_price(item) {
-      console.log(item, "item in calc")
+      console.log(item, "item in calc");
       this.all_recept.forEach((recept) => {
         if (recept.recept_detail.includes(item)) {
-          var idx = recept.recept_detail.indexOf(item)
-          recept.recept_detail[idx].raw_material_set.remain = item.raw_material_set.remain
-          recept.recept_detail[idx].total_price = parseInt(item.raw_material_set.remain) * parseInt(item.last_price)
-          console.log(recept.recept_detail[idx].total_price, 'data')
+          var idx = recept.recept_detail.indexOf(item);
+          recept.recept_detail[idx].raw_material_set.remain =
+            item.raw_material_set.remain;
+          recept.recept_detail[idx].total_price =
+            parseInt(item.raw_material_set.remain) * parseInt(item.last_price);
+          console.log(recept.recept_detail[idx].total_price, "data");
         }
-      })
+      });
     },
   },
   computed: {
@@ -1989,8 +2143,8 @@ export default {
 
 <style scoped>
 .po-item-label {
-  display: inline; 
-  font-size: 26px; 
+  display: inline;
+  font-size: 26px;
   color: white;
 }
 .under-wrapper-unput {
@@ -2086,7 +2240,6 @@ export default {
   width: 30px;
   padding-left: 9%;
   line-height: 160%;
-
 }
 .checkbox-orange input:checked::after {
   padding-left: 8%;
@@ -2107,7 +2260,6 @@ export default {
   top: 150px;
   border-radius: 24px;
   left: 13%;
-  
 }
 .frame {
   border-radius: 24px;
