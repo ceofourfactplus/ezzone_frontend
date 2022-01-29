@@ -303,9 +303,17 @@ export default {
       return (parseInt(num)).toLocaleString()
     },
     getDate(date) {
-      console.log(date);
-      var temp_date = date.slice(0, 10).split('-')
-      return `${temp_date[2]}/${temp_date[1]}/${temp_date[0]}`
+      console.log(date)
+      if (date != null) {
+        const day = new Date(date);
+        const result = day.toLocaleDateString("th-TH", {
+          year: "2-digit",
+          month: "2-digit",
+          day: "2-digit",
+        });
+        return result;
+      }
+      return "-";
     },
     onFileChange(e) {
       this.customer.img = e.target.files[0];

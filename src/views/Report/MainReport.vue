@@ -152,7 +152,7 @@
         </div>
         <div class="w-100 total-mini" style="display: inline"></div>
       </div>
-      <div class="col-3 space">
+      <div class="col-3 space" @click="$router.push({name:'ProductReport'})">
         <div class="w-100 mini-title mb-2">
           <img src="../../assets/icon/top-drink.png" alt="" />
           Drink

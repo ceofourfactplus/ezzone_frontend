@@ -75,7 +75,7 @@ export default {
         }
       }
 
-      if (state.order.phone_number != "" && state.point_promotion != null) {
+      if (state.order.phone_number != "" && state.point_promotion != null && state.point_promotion != '') {
         state.order.point =
           Math.floor(
             (state.order.total_balance - state.order.delivery_price) /
@@ -145,7 +145,7 @@ export default {
     phone_number(state, phone) {
       state.order.phone_number = phone;
 
-      if (state.order.phone_number != "" && state.point_promotion != null) {
+      if (state.order.phone_number != "" && state.point_promotion != null && state.point_promotion != '') {
         state.order.point =
           Math.floor(
             (state.order.total_balance - state.order.delivery_price) /
@@ -158,7 +158,7 @@ export default {
       state.customer_set = customer;
       state.order.nick_name = customer.nick_name;
       state.order.phone_number = customer.phone_number;
-      if (state.order.phone_number != "" && state.point_promotion != null) {
+      if (state.order.phone_number != "" && state.point_promotion != null && state.point_promotion != '') {
         state.order.point =
           Math.floor(
             (state.order.total_balance - state.order.delivery_price) /

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav-app>Daily Product Report</nav-app>
+    <nav-app :url_name="'MainReport'" :params="{ type: 'daily' }">Daily Product Report</nav-app>
     <div class="row" style="width: 90%; margin: auto">
       <div class="col-12 frame">
         <div class="row">
@@ -257,11 +257,11 @@ li .color {
 .no {
   position: absolute;
   bottom: 3px;
-  right: 0px;
+  right: 8px;
   width: 25px;
   height: 25px;
   font-weight: 700;
   border-radius: 50%;
-  background-color: #ea7c69;
+  background-color: #eb634b;
 }
 </style>
