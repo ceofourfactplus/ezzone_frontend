@@ -72,7 +72,7 @@
             style="color: white; margin: 15px 10px 0px 0px"
           >
             Status&nbsp;:&nbsp;
-            <Switch @switch="switch_active" style="top: 9px" />
+            <Switch :value="package_item.status" @switch="switch_active" style="top: 9px" />
           </div>
           <div class="col-12 w-100" style="margin-top: 30px">
             <!-- Image -->
@@ -178,7 +178,7 @@
             </div>
             <div class="col-1 w-100">{{ item.qty }}</div>
             <div class="col-3 w-100">
-              {{ item.product_set.priceproduct_set[0].price }}
+              {{ (parseInt(item.total_price)).toFixed(2) }}
             </div>
           </div>
         </div>
@@ -283,7 +283,7 @@
               </div>
               <div class="col-1 w-100">{{ topping.qty }}</div>
               <div class="col-3 w-100">
-                {{ topping.topping_set.pricetopping_set[0].price }}
+                {{ topping.total_price }}
               </div>
             </div>
           </div>
@@ -349,7 +349,7 @@
                     type="number"
                     class="input-add-package"
                     :value="
-                      topping.topping_set.pricetopping_set[0].price *
+                      topping.total_price *
                       topping.qty
                     "
                     required
@@ -689,6 +689,10 @@ export default {
     this.is_staff = this.$store.state.auth.userInfo["is_staff"];
     this.fetchProducts();
     this.fetchToppings();
+    setTimeout(() => {
+      this.find_package_discount_price(1)
+      this.calc_total_price();
+    }, 1000)
   },
   data() {
     return {
@@ -786,8 +790,8 @@ export default {
           element.itemtopping_set.forEach((el) => {
             pi.itemtopping_set.push({
               id: el.id,
-              topping_id: el.topping_set.id,
-              total_price: parseInt(el.topping_set.pricetopping_set[0].price),
+              topping: el.topping_set.id,
+              total_price: parseInt(el.total_price),
               qty: el.qty,
             });
           });
@@ -799,17 +803,22 @@ export default {
         promotion: this.package_item.promotion,
         start_date: this.package_item.start_date,
         amount_day: this.package_item.amount_day,
-        discount_price: this.package_item.discount_price,
+        pricepackage_set: [
+          {
+            normal_price: this.total_price,
+            discount_price: this.package_item.discount_price,
+            sale_channel: this.$store.state.ezzone_id,
+          },
+        ],
         description: this.package_item.description,
         total_amount: this.package_items.length,
         status: this.package_item.status,
-        normal_price: this.package_item.normal_price,
         update_by_id: this.$store.state.auth.userInfo.id,
-        create_by_id: this.$store.state.auth.userInfo.id,
+        create_by: this.$store.state.auth.userInfo.id,
         packageitem_set: packageitem,
       };
       console.log(data, "data");
-      api_promotion.put("package/", data).then((response) => {
+      api_promotion.put(`package-update/${data.id}`, data).then((response) => {
         const img_data = new FormData();
         // img_data.append("img", this.img, this.img.name);
         api_promotion
@@ -917,8 +926,8 @@ export default {
       console.log(e.target, "e");
       this.package_item.start_date = e.target
     },
-    switch_active(val) {
-      this.package_items = val;
+    switch_active() {
+      this.package_item.status = !this.package_item.status;
     },
     make_package_item() {
       if (Object.keys(this.topping_item).length != 0) {
@@ -999,6 +1008,13 @@ export default {
       this.qty = null;
       this.total_price = 0;
     },
+    find_package_discount_price(sale_channel_id) {
+      this.package_item.pricepackage_set.forEach(item => {
+        if(item.sale_channel == sale_channel_id) {
+          this.package_item.discount_price = item.discount_price
+        }
+      })
+    }
   },
   computed:{
     calc_total_price(){

@@ -61,10 +61,15 @@
           <!-- Status -->
           <div class="StatusBlock">
             <img
-              style="height: 35px;position:relative;bottom:2px;"
-              :src="$store.state.raw_material.status_image[item.raw_material_set.status]['img']"
-              alt="img"
-            />
+            style="height: 35px;position:relative;bottom:2px;"
+            :style="$store.state.raw_material.status_image[item.raw_material_set.status]['style']"
+            :src="
+              $store.state.raw_material.status_image[
+                item.raw_material_set.status
+              ]['img']
+            "
+            alt="img"
+          />
           </div>
 
 
@@ -162,13 +167,13 @@ export default {
       } else {
         if (this.search_type == "item") {
           this.temp_items.forEach((element) => {
-            if (element.raw_material_set.name.indexOf(val) + 1 != 0) {
+            if (element.raw_material_set.name.toLowerCase().indexOf(val) + 1 != 0) {
               temp.push(element);
             }
           });
         } else {
           this.temp_items.forEach((element) => {
-            if (element.supplier_set.company_name.indexOf(val) + 1 != 0) {
+            if (element.supplier_set.company_name.toLowerCase().indexOf(val) + 1 != 0) {
               temp.push(element);
             }
           });
