@@ -73,7 +73,7 @@
               {{ PhoneNumber(customer.phone_number) }}
             </div>
             <div class="col-3 w-100" style="padding: 0px">
-              {{ BirthDate(customer.birth_date) }}
+              {{ BirthDate(customer.last_joined) }}
               <img
                 @click="select(customer)"
                 src="../../assets/icon/home.png"
@@ -207,6 +207,7 @@ export default {
       return output;
     },
     BirthDate(date) {
+      console.log(date)
       if (date != null) {
         const day = new Date(date);
         const result = day.toLocaleDateString("th-TH", {

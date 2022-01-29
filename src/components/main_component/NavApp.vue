@@ -6,7 +6,7 @@
           <img
             src="../../assets/icon/btn-back.png"
             class="back inline ms-4"
-            @click="$router.push({ name: url_name })"
+            @click="$router.push({ name: url_name,params: params })"
           />
         </div>
         <div class="col-10 w-100">
@@ -183,6 +183,7 @@ export default {
     "trash",
     "url_name",
     "product_menu",
+    'params'
   ],
   data() {
     return {

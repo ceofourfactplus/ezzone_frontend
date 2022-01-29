@@ -2,12 +2,6 @@
   <div class="c">
     <div class="container">
       <h1 id="login">Login</h1>
-      <div class="arrow">
-        <img
-          src="https://www.figma.com/file/it3vEPwSA4GGwyfUFZo4no/EZ-wireframe_3(Dark-tone)?node-id=233%3A2021"
-          alt=""
-        />
-      </div>
       <form @submit="login">
         <!-- <div class="alert alert-error m" v-if="error.status">
           <div class="row">

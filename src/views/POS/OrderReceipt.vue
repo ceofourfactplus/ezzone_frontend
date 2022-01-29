@@ -22,7 +22,7 @@
           <label for="tel">Tel.</label>
           <div
             style="
-              width: 185px;
+              width: 195px;
               background-color: #303344;
               height: 40px;
               border-radius: 5px;
@@ -46,7 +46,7 @@
               position: relative;
               margin-right: 18px;
             "
-            v-if="'id' in $store.state.pos.customer_set"
+            v-if="$store.state.pos.order.point != ''"
           />
           <span
             style="font-size: 24px; color: #ea7c69"
@@ -59,7 +59,7 @@
           <input
             type="text"
             id="name"
-            style="margin-right: 15px; width: 241px"
+            style="margin-right: 15px; width: 240px"
             v-model="$store.state.pos.order.nick_name"
           />
           <img
@@ -110,7 +110,8 @@
           <textarea
             id="address"
             v-model="$store.state.pos.order.address"
-            @click="select_address = true"
+            @focus="select_address = true"
+            @blur="select_address = false"
           ></textarea>
         </div>
         <ul
@@ -334,6 +335,7 @@ import InputTel from "../../components/main_component/InputTel.vue";
 import SelectTable from "../../components/main_component/SelectTable.vue";
 import SelectPayment from "../../components/payment/SelectPayment.vue";
 import { api_promotion } from "../../api/api_promotion";
+
 export default {
   components: {
     NavApp,
@@ -359,9 +361,9 @@ export default {
   },
   mounted() {
     this.fetchVoucher();
-    api_promotion.get('point-pos/').then((response)=>{
+    api_promotion.get("point-pos/").then((response) => {
       this.$store.state.pos.point_promotion = response.data;
-    })
+    });
   },
   methods: {
     is_topping(product) {
