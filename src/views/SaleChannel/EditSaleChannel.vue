@@ -678,7 +678,7 @@ export default {
             temp.push(element);
           }
         });this.sale_channel_set.price_package.forEach((element) => {
-          if (element.topping_set.promotion.indexOf(val) + 1 != 0) {
+          if (element.package_set.promotion.indexOf(val) + 1 != 0) {
             temp.push(element);
           }
         });

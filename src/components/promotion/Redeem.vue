@@ -21,10 +21,7 @@
         </div>
         <div class="row" style="height: 250px; padding-top: 10px">
           <div class="col-6 RedeemImg" style="background-color: #717171">
-            <img
-              :src="
-                require(`../../../../backend${$store.state.promotion.reward_detail.img}`)
-              "
+            <img :src="$store.state.promotion.reward_detail.img"
               style="height: 245px; width: 243px"
             />
           </div>
