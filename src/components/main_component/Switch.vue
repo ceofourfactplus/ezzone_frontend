@@ -37,7 +37,7 @@ export default {
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
+  width: 64px;
   height: 34px;
 }
 
@@ -52,10 +52,10 @@ export default {
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   background-color: #fff;
   -webkit-transition: 0.4s;
   transition: 0.4s;
@@ -64,10 +64,9 @@ export default {
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
+  height: 96%;
+  width: 50%;
+  margin: 2% 5px 2% 0%;
   background-color: #ccc;
   -webkit-transition: 0.4s;
   transition: 0.4s;
@@ -82,18 +81,22 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(100%);
+  -ms-transform: translateX(100%);
+  transform: translateX(100%);
   background-color: #50d1aa;
 }
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+  border-radius: 25%/50%;
 }
 
 .slider.round:before {
   border-radius: 50%;
-  top: 1px;
+  height: 96%;
+  width: 50%;
+  margin: 1% 5px 1% 0%;
+  padding: 0%;
+  left: 0%;
 }
 </style>

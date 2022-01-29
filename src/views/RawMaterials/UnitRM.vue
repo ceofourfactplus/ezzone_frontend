@@ -1,11 +1,11 @@
 <template>
   <div>
     <nav-app :url_name="'DashBoard'">Unit</nav-app>
-    <div class="row" v-if="is_staff" style="width: 90%; margin: auto">
-      <div class="col-10 w-100 ps-0">
+    <div class="row GridAreaSearch" v-if="is_staff" style="width: 90%; margin: auto;">
+      <div class="w-100" style="padding: 0px;">
         <SearchBar @search="search_by_typing" />
       </div>
-      <div class="col-2 w-100" style="padding-left: 0px">
+      <div class="w-100" style="padding-right: 0px;">
         <button
           class="btn-ghost"
           style="white-space: nowrap;height:45px;"
@@ -17,51 +17,42 @@
     </div>
     <SearchBar v-else @search="search_by_typing" />
     <!-- Table -->
-    <div class="table" style="margin-top: 10px">
+    <div class="table" style="width:90%; margin:auto; margin-top:10px">
       <div class="table-header">
         <!-- Is Staff -->
-        <div v-if="is_staff" class="row" style="padding-right: 80px">
-          <div class="col-6" style="margin-left: 90px">Unit</div>
-          <div class="col-6" style="padding-left: 20px">Amount</div>
+        <div v-if="is_staff" class="GridItemHead">
+          <div class="w-100" >Unit</div>
+          <div class="w-100" >Amount</div>
         </div>
       </div>
-      <div
-        style="
-          height: 740px;
-          overflow-y: scroll;
-          overflow-x: hidden;
-          border-radius: 10px;
-        "
-      >
-        <div v-if="is_staff">
-          <div
-            class="row table-item"
-            v-for="(item, idx) in all_unit"
-            :key="idx"
+      <!-- Scoll Bar -->
+      <div class="ScollArea" v-if="is_staff">
+
+        <div v-for="(item, idx) in all_unit" :key="idx" style="height:40px; margin: 0px 0px 8px 0px;">
+
+          <div class="GridItemHead table-item"
             style="
-              padding-right: 0px;
-              margin: 10px 0px 0px 0px;
+              padding: 0px;
+              margin: 0px;
               background-color: #303344;
               border-radius: 10px;
-              line-height: 18px;
-            "
-          >
-            <div
-              class="col-6"
-              style="text-align: left; width: 100%; margin-left: 50px"
-            >
-              {{ item.unit }}
-            </div>
-            <div class="col-2" style="margin-left: -5px">100</div>
-            <div class="col-4 w-100" style="right:10px">
+              line-height: 200%;
+            ">
+            <div class="w-100" style="text-align:left; padding-left: 18px">{{ item.unit }}</div>
+            <div class="w-100" >100</div>
+            <div class="w-100">
               <img
                 @click="SelectUnit(item)"
                 src="../../assets/icon/edit.png"
-                style="bottom: 3px; width: 25px; height: 30px"
+                style="position:relative; bottom: 3px; width: 25px; height: 30px"
               />
             </div>
+
           </div>
+
         </div>
+          
+        
       </div>
     </div>
 
@@ -258,12 +249,31 @@ h2 {
   color: #65b0f6;
   width: 119px;
   height: 50px;
-  margin: 0px 40px 0px 0px;
+  margin: 0px 0px 0px 0px;
 }
 .wrap-search {
   min-width: 610px;
   width: fit-content;
   padding: 0px;
   margin-left: 45px;
+}
+.GridAreaSearch {
+  display: inline-grid;
+  grid-template-columns: 82% 18%;
+
+}
+.GridItemHead {
+  width: 100%;
+  display: inline-grid;
+  grid-template-columns: 40% 40% 20%;
+
+}
+.ScollArea {
+  height: 750px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border-radius: 10px;
+  margin-top: 8px;
+
 }
 </style>
