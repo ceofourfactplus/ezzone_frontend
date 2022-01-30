@@ -162,7 +162,8 @@
                   type="checkbox"
                   style="margin-top: -2px; left: 23px"
                   :value="item"
-                  @change="select_del_item(item, true)"
+                  @change="check_item_child(item)"
+                  v-model="selected_items"
                 />
               </div>
             </div>
@@ -261,7 +262,7 @@
                     type="checkbox"
                     style="margin-top: -2px; left: 23px"
                     :value="topping"
-                    @change="select_del_item(item, false)"
+                    v-model="selected_item_toppings"
                   />
                 </div>
               </div>
@@ -943,14 +944,30 @@ export default {
         this.selected_items.push(item);
       }
     },
+    check_item_child(item) {
+      console.log(item, 'item')
+      item.topping.forEach(topping => {
+        if (!this.selected_item_toppings.includes(topping)) {
+          this.selected_item_toppings.push(topping)
+        } else {
+            var idx = this.selected_item_toppings.indexOf(topping);
+            this.selected_item_toppings.splice(idx, 1);
+        }
+      })
+      
+    },
     select_all_items() {
       this.select_all = !this.select_all;
       if (this.select_all) {
-        this.package_items.forEach((el) => {
-          this.select_item(el);
+        this.package_items.forEach((item) => {
+          this.select_del_item(item, true)
+          item.topping.forEach(topping => {
+            this.select_del_item(topping, false)
+          })
         });
       } else {
         this.selected_items = [];
+        this.selected_item_toppings = [];
       }
     },
     delete_pip() {

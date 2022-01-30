@@ -1089,9 +1089,10 @@ export default {
 </script>
 
 <style scoped>
+
 .po-item-label {
-  display: inline;
-  font-size: 26px;
+  display: inline; 
+  font-size: 26px; 
   color: white;
 }
 .under-wrapper-unput {

@@ -79,11 +79,11 @@
           <div class="col-1 w-100" style="margin-right: 20px;">Pickup</div>
         </div>
       </div>
-      <div class="row table-item" v-for="item in temp_rm" :key="item.id" style="padding-right: 0px; background-color: #303344; border-radius: 10px; margin: 0px; margin-top: 5px; line-height: 40px;">
+      <div class="row table-item" v-for="item in raw_materials" :key="item.id" style="padding: 0px; background-color: #303344; border-radius: 10px; margin: 0px; margin-top: 5px; line-height: 40px;">
           <div
-              class="col-6 w-100"
+              class="col-6"
               @click="editRM(item)"
-              style="text-align: left; white-space:nowrap;overflow-x:auto;"
+              style="width:95%;margin-left:5%;padding:0%;text-align: left; white-space:nowrap;overflow-x:auto;"
             >
               {{ item.name }}
             </div>

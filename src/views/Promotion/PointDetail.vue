@@ -89,7 +89,7 @@
             />
           </div>
           <div class="col-12 w-100" id="txt-right-side">
-            <Switch :value="point_item.status" style="margin-top: 10px" />
+            <Switch :value="point_item.status" style="position:relative;top:12%;" />
           </div>
         </div>
       </div>

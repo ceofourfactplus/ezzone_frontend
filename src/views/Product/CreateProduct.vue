@@ -108,15 +108,15 @@
       <div class="frame f-2">
         <div class="row">
           <div class="col-6 label-input">
-            <label for="flavour">Flavour:</label
-            ><select id="flavour" v-model="flavour">
+            <label for="flavour">Flavour :</label
+            ><select id="flavour" v-model="flavour" style="width:61%;">
               <option value="2">Sweet</option>
               <option value="1">Spicy</option>
             </select>
           </div>
           <div class="col-6 label-input">
-            <label for="stock">Stock:</label
-            ><select id="stock" style="width: 210px" v-model="stock">
+            <label for="stock">Stock :</label
+            ><select id="stock" style="width: 64%" v-model="stock">
               <option value="0">No Stock</option>
               <option value="1">Product</option>
               <option value="2" disabled>Material</option>
@@ -130,10 +130,10 @@
             />
           </div>
           <div class="col-7 label-input m-15">
-            <label for="type_topping">Topping Cate:</label
+            <label for="type_topping">Topping Cate :</label
             ><select
               id="type_topping"
-              style="width: 165px"
+              style="width: 160px"
               v-model="toppingcategory_id"
             >
               <option
