@@ -111,7 +111,7 @@
             id="address"
             v-model="$store.state.pos.order.address"
             @focus="select_address = true"
-            @blur="select_address = false"
+            @blur="clear_add()"
           ></textarea>
         </div>
         <ul
@@ -376,6 +376,9 @@ export default {
     payment(payment) {
       this.selected_payment = payment;
       this.select_payment = false;
+    },
+    clear_add(){
+      setTimeout(()=>{this.select_address = false},50)
     },
     select_table(i) {
       if (i == "-") {
