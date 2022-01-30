@@ -165,7 +165,8 @@
                   type="checkbox"
                   style="margin-top: -2px; left: 23px"
                   :value="item"
-                  @change="select_del_item(item, true)"
+                  v-model="selected_items"
+                  @change="check_item_child(item)"
                 />
               </div>
             </div>
@@ -270,7 +271,7 @@
                     type="checkbox"
                     style="margin-top: -2px; left: 23px"
                     :value="topping"
-                    @change="select_del_item(item, false)"
+                    v-model="selected_item_toppings"
                   />
                 </div>
               </div>
@@ -868,6 +869,7 @@ export default {
         if (!this.selected_items.includes(item)) {
           this.selected_items.push(item);
         } else {
+          console.log('splice')
           var idx = this.selected_items.indexOf(item);
           this.selected_items.splice(idx, 1);
         }
@@ -977,14 +979,30 @@ export default {
         this.selected_items.push(item);
       }
     },
+    check_item_child(item) {
+      console.log(item, 'item')
+      item.itemtopping_set.forEach(topping => {
+        if (!this.selected_item_toppings.includes(topping)) {
+          this.selected_item_toppings.push(topping)
+        } else {
+            var idx = this.selected_item_toppings.indexOf(topping);
+            this.selected_item_toppings.splice(idx, 1);
+        }
+      })
+      
+    },
     select_all_items() {
       this.select_all = !this.select_all;
       if (this.select_all) {
-        this.package_items.forEach((el) => {
-          this.select_item(el);
+        this.package_items.forEach((item) => {
+          this.select_del_item(item, true)
+          item.itemtopping_set.forEach(topping => {
+            this.select_del_item(topping, false)
+          })
         });
       } else {
         this.selected_items = [];
+        this.selected_item_toppings = [];
       }
     },
     delete_pip() {
@@ -992,14 +1010,16 @@ export default {
         var idx = this.package_items.indexOf(this.selected_items[index]);
         this.package_items.splice(idx, 1);
       }
-      for (let index = 0; index < this.selected_item_toppings.length; index++) {
+      for (let index = 0; index < this.selected_item_toppings.length - 1; index++) {
+        console.log(index, "index")
         var top_idx = this.package_items[index].itemtopping_set.indexOf(
           this.selected_item_toppings[index]
         );
-        this.package_items[index].itemtopping_set.splice(top_idx - 1, 1);
+        this.package_items[index].itemtopping_set.splice(top_idx , 1);
       }
       this.selected_items = [];
       this.selected_item_toppings = [];
+      this.calc_total_price();
     },
     cancel_to_create() {
       this.add_menu = false;
@@ -1014,9 +1034,7 @@ export default {
           this.package_item.discount_price = item.discount_price
         }
       })
-    }
-  },
-  computed:{
+    },
     calc_total_price(){
       this.total_price = 0;
       this.package_items.forEach((el) => {
@@ -1027,7 +1045,10 @@ export default {
           );
         });
       });
-    }
+    },
+  },
+  computed:{
+
   },
   beforeMount() {
     this.fetchPackage();
