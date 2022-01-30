@@ -24,7 +24,14 @@
       <div class="AreaPage row table-item" v-for="item in pickup_items" :key="item.id">
         <div class="col-2 w-100">
           {{  format_date(item.create_at) }}</div>
-        <div class="col-5 w-100" style="padding-right:0%;text-align: left; white-space: nowrap; overflow-x: auto;">
+        <div class="col-5" 
+          style="
+          width:95%;
+          margin-left:5%;
+          padding-left:0%;
+          text-align: left; 
+          white-space: nowrap; 
+          overflow-x: auto;">
           {{ item.raw_material_set.name }}
         </div>
         <div class="col-2 w-100">

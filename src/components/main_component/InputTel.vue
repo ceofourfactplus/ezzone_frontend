@@ -3,7 +3,7 @@
     <div class="dark" @click="$emit('hide', input_customer)"></div>
     <div class="input">
       <form @submit="enter()">
-        <input type="text" v-model="input_customer" />
+        <input type="number" pattern="[0-9]*" v-model="input_customer" />
         <input type="submit" style="display: none" />
       </form>
       <ul class="selector" v-if="selector_customer.length != 0">
