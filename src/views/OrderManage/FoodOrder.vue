@@ -70,7 +70,7 @@
           <div v-for="order in all_order" :key="order.id">
             <!-- head order -->
             <div
-              class="row w-100 header mb-2"
+              class="row w-100 header mb-4"
               style="padding: 0px; margin: 0px"
             >
               <div class="col-2 w-100" style="font-size: 30px">
@@ -272,7 +272,7 @@ export default {
       all_order: [],
       loader: window.setInterval(() => {
         this.get_order();
-      }, 5000),
+      }, 10000),
       remain_order: 0,
       finished_order: 0,
       type_order: 1,
@@ -283,7 +283,6 @@ export default {
       var wait = order_list.filter((item) => {
         return item.status_food == 0;
       });
-      console.log(wait.length);
       if (wait.length != 0 && audio.paused) {
         audio.play();
       }
@@ -359,6 +358,11 @@ export default {
       }
     },
     accept(order) {
+      this.all_order.forEach((order_set) => {
+        if (order_set.id == order.id) {
+          order_set.status_food = 1;
+        }
+      })
       api_pos.put("change-status-order/kitchen/1/1/" + order.id).then(() => {
         this.get_order();
       });
