@@ -264,7 +264,7 @@ export default {
       all_order: [],
       loader: window.setInterval(() => {
         this.get_order();
-      }, 5000),
+      }, 10000),
       remain_order: 0,
       finished_order: 0,
       type_order: 1,
@@ -353,6 +353,11 @@ export default {
       }
     },
     accept(order) {
+      this.all_order.forEach((order_set) => {
+        if (order_set.id == order.id) {
+          order_set.status_drink = 1;
+        }
+      });
       api_pos.put("change-status-order/counter/1/1/" + order.id).then(() => {
         this.get_order();
       });
@@ -361,6 +366,11 @@ export default {
       this.all_order.forEach((order) => {
         if (order.id == order_id) {
           order.status_drink = 2;
+          order.orderitem_set.forEach((item) => {
+            if (item.product_set.type_product == 2) {
+              item.status_order = 2;
+            }
+          });
         }
       });
       api_pos.put("change-status-order/counter/1/2/" + order_id);

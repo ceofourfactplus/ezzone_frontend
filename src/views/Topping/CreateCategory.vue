@@ -125,16 +125,15 @@ export default {
     save() {
       const array = []
       this.select_topping.forEach(item=>{
-        array.push(item)
+        array.push({topping:item})
       })
-      console.log(array)
-      console.log(this.select_topping,'second')
-      const data = new FormData();
-      data.append("create_by", 1);
-      data.append("category", this.category);
-      data.append("select_topping", array)
+      const data = {
+        create_by:this.$store.state.auth.userInfo.id,
+        category:this.category,
+        settopping_set:array
+      }
         api_product
-          .post("topping/category/", data)
+          .post("create-topping/category/", data)
           .then(() => {
             this.alert = true
             setTimeout(() => {

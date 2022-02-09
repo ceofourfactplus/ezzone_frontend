@@ -213,7 +213,7 @@ export default {
     return {
       w: window.setInterval(() => {
         this.get_status(this.selected_status);
-      }, 5000),
+      }, 10000),
       all_order: [],
       selected_status: "1",
       selected_order: null,
