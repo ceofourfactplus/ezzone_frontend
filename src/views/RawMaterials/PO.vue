@@ -1092,7 +1092,7 @@ export default {
 
 .po-item-label {
   display: inline; 
-  font-size: 26px; 
+  font-size: 26x; 
   color: white;
 }
 .under-wrapper-unput {

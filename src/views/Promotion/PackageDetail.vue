@@ -21,19 +21,15 @@
           <!-- Start Date -->
           <div class="row" style="margin-top: 20px">
             <div class="col-12 w-100 txt">
-              <div style="display: inline" v-if="package_item.start_date == null">
-                <span style="margin-left: -140px">Start Date</span
-                >&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{ package_item.start_date }}&nbsp;&nbsp;
-              </div>
-              <div style="display: inline" v-else>
-                <span style="margin-left: 23px">Start Date</span
-                >&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{ package_item.start_date }}&nbsp;&nbsp;
+              <div style="display: inline">
+                <span style="margin-left: -23px">Start Date</span
+                >&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{ format_date(package_item.start_date) }}&nbsp;&nbsp;
               </div>
               <input
                 style="display: inline"
                 type="date"
                 class="input-date"
-                @change="format_date($event)"
+                v-model="package_item.start_date"
               />
             </div>
           </div>
@@ -924,9 +920,9 @@ export default {
       }
       console.log(this.img, "img");
     },
-    format_date(e) {
-      console.log(e.target, "e");
-      this.package_item.start_date = e.target
+    format_date(date) {
+      var temp_date = date.split("-");
+      return `${temp_date[2]}/${temp_date[1]}/${temp_date[0]}`;
     },
     switch_active() {
       this.package_item.status = !this.package_item.status;
