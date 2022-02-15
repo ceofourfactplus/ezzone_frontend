@@ -6,16 +6,25 @@
     >
     <div class="row" style="width: 85%; margin: auto">
       <div class="col-12 w-100 header" style="display: flex">
-        <h1>Total Balance Report</h1>
-        <select v-model="day" @change="select_date()">
-          <option value="1">Monday</option>
-          <option value="2">Tuesday</option>
-          <option value="3">Wednesday</option>
-          <option value="4">Thursday</option>
-          <option value="5">Friday</option>
-          <option value="6">Saturday</option>
-          <option value="0">Sunday</option>
-        </select>
+        <div class="row" style="margin-top: -4px">
+          <div class="col-4 w-100">
+            <input type="date" v-model="from_date" @change="find" style="width: 230px; height: 40px;"> 
+          </div>
+          <div class="col-4 w-100">
+            <input type="date" v-model="to_date" @change="find" style="width: 230px; height: 40px;">
+          </div>
+          <div class="col-4 w-100">
+            <select v-model="day" @change="select_date()">
+              <option value="1">Monday</option>
+              <option value="2">Tuesday</option>
+              <option value="3">Wednesday</option>
+              <option value="4">Thursday</option>
+              <option value="5">Friday</option>
+              <option value="6">Saturday</option>
+              <option value="0">Sunday</option>
+            </select>
+          </div>
+        </div>
       </div>
       <div
         class="col-12 mt-2"
@@ -188,17 +197,6 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-4">
-        <input type="date" v-model="from_date">
-      </div>
-      <div class="col-4">
-        <input type="date" v-model="to_date">
-      </div>
-      <div class="col-4">
-        <button @click="find" style="border-radius: 20px; width50px;height:15px;background-color: white;">Search</button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -258,22 +256,24 @@ export default {
         });
     },
     find() {
-      var data = new FormData();
-      var temp_from = this.from_date.split("-")
-      var temp_to = this.to_date.split("-")
+      if(this.from_date != '' && this.to_date != '') {
+        var data = new FormData();
+        var temp_from = this.from_date.split("-")
+        var temp_to = this.to_date.split("-")
 
-      data.append("year_to", parseInt(temp_to[0]))
-      data.append("month_to", parseInt(temp_to[1]))
-      data.append("day_to", parseInt(temp_to[2]) + 1)
-      data.append("year_from", parseInt(temp_from[0]))
-      data.append("month_from", parseInt(temp_from[1]))
-      data.append("day_from", parseInt(temp_from[2]))
+        data.append("year_to", parseInt(temp_to[0]))
+        data.append("month_to", parseInt(temp_to[1]))
+        data.append("day_to", parseInt(temp_to[2]) + 1)
+        data.append("year_from", parseInt(temp_from[0]))
+        data.append("month_from", parseInt(temp_from[1]))
+        data.append("day_from", parseInt(temp_from[2]))
 
-      api_pos
-          .post("report/by_date", data)
-          .then((response) => {
-            this.report = response.data;
-        });
+        api_pos
+            .post("report/by_date", data)
+            .then((response) => {
+              this.report = response.data;
+          });
+      }
     },
     calc_week() {
       console.log('hello calc')
