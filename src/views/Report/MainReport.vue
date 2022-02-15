@@ -188,6 +188,17 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-4">
+        <input type="date" v-model="from_date">
+      </div>
+      <div class="col-4">
+        <input type="date" v-model="to_date">
+      </div>
+      <div class="col-4">
+        <button @click="find" style="border-radius: 20px; width50px;height:15px;background-color: white;">Search</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -197,24 +208,83 @@ import NavApp from "../../components/main_component/NavApp.vue";
 export default {
   components: { NavApp },
   mounted() {
-    var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1;
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();
-    this.day = dateObj.getDay();
-    api_pos
-      .get("report/daily/" + year + "/" + month + "/" + day)
-      .then((response) => {
-        this.report = response.data;
-      });
+    this.reportation()
   },
   data() {
     return {
       report: {},
       day: 0,
+      from_date: '',
+      to_date: '',
     };
   },
   methods: {
+    reportation() {
+      var dateObj = new Date();
+      var month = dateObj.getUTCMonth() + 1;
+      var day = dateObj.getUTCDate();
+      var year = dateObj.getUTCFullYear();
+      console.log(month, day, 'type')
+      var data = new FormData();
+      this.day = dateObj.getDay();
+      if (this.$route.params.type == 'daily') {
+        data.append("year_to", year)
+        data.append("month_to", month)
+        data.append("day_to", day + 1)
+        data.append("year_from", year)
+        data.append("month_from", month)
+        data.append("day_from", day)
+      } else if (this.$route.params.type == 'weekly') {
+        this.calc_week()
+        day -= this.day
+        data.append("year_to", year)
+        data.append("month_to", month)
+        data.append("day_to", day + 7)
+        data.append("year_from", year)
+        data.append("month_from", month)
+        data.append("day_from", day)
+      } else {
+        data.append("year_to", year)
+        data.append("month_to", month + 1)
+        data.append("day_to", day)
+        data.append("year_from", year)
+        data.append("month_from", month)
+        data.append("day_from", day)
+      }
+      api_pos
+          .post("report/by_date", data)
+          .then((response) => {
+            this.report = response.data;
+        });
+    },
+    find() {
+      var data = new FormData();
+      var temp_from = this.from_date.split("-")
+      var temp_to = this.to_date.split("-")
+
+      data.append("year_to", parseInt(temp_to[0]))
+      data.append("month_to", parseInt(temp_to[1]))
+      data.append("day_to", parseInt(temp_to[2]) + 1)
+      data.append("year_from", parseInt(temp_from[0]))
+      data.append("month_from", parseInt(temp_from[1]))
+      data.append("day_from", parseInt(temp_from[2]))
+
+      api_pos
+          .post("report/by_date", data)
+          .then((response) => {
+            this.report = response.data;
+        });
+    },
+    calc_week() {
+      console.log('hello calc')
+          if (this.day - 7 < 0) {
+            return
+          } else {
+            this.day -= 7
+            console.log(this.day, 'day')
+          }
+          return calc_week()
+    },
     check_value(value) {
       if (value == null) {
         return 0;

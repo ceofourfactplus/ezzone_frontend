@@ -474,10 +474,12 @@ import SearchBar from "../../components/materials/SearchBar.vue";
 export default {
   components: { NavApp, Switch, SearchBar, SavePopup },
   mounted() {
-    this.get_duplicate();
     api_promotion.get("package").then((response) => {
       this.all_packages = response.data;
     });
+  },
+  beforeMount() {
+    this.get_duplicate();
   },
   data() {
     return {
@@ -751,7 +753,8 @@ export default {
           )
           .then((response) => {
             this.sale_channel_set = response.data;
-            this.sale_channel_set.sale_channel = "";
+            console.log(this.sale_channel_set, "sale_channel_set")
+            // this.sale_channel_set.sale_channel = "";
             delete this.sale_channel_set.id;
             this.sale_channel_set.create_by =
               this.$store.state.auth.userInfo.id;
