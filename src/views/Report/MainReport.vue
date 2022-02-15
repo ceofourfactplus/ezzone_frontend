@@ -10,7 +10,7 @@
           <div class="col-4 w-100">
             <input type="date" v-model="from_date" @change="find" style="width: 230px; height: 40px;"> 
           </div>
-          <div class="col-4 w-100">
+          <div class="col-4 w-100" style="margin-left: 10px;">
             <input type="date" v-model="to_date" @change="find" style="width: 230px; height: 40px;">
           </div>
           <div class="col-4 w-100">
