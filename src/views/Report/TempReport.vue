@@ -36,7 +36,7 @@ export default {
               product_combined[item.product_set.name].amount += item.amount
             }
           })
-          for(i in product_combined) {
+          for(const i in product_combined) {
             this.reports.push({
               'obj': product_combined[i],
             })
