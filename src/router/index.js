@@ -104,6 +104,7 @@ import MainReport from "../views/Report/MainReport.vue";
 import SelectReport from "../views/Report/SelectReport.vue";
 import ProductReportDetail from "../views/Report/ProductReportDetail.vue";
 import ProductReport from "../views/Report/ProductReport.vue";
+import TempReport from "../views/Report/TempReport.vue";
 
 import Chart1 from "../views/TestChart/Chart1.vue";
 import FaceLogin from "../views/FaceDetector/LoginFace.vue";
@@ -133,6 +134,15 @@ const routes = [
     props: true,
     name: "MainReport",
     component: MainReport,
+    meta: {
+      requiresLogin: true,
+    },
+  },
+  {
+    path: "/report/temp",
+    props: true,
+    name: "TempReport",
+    component: TempReport,
     meta: {
       requiresLogin: true,
     },

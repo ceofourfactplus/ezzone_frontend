@@ -1,10 +1,5 @@
 <template>
   <div>
-    <ul style="background-color: black;">
-        <li>
-            &nbsp;&nbsp;&nbsp;
-        </li>
-    </ul>
     <div class="table">
       <div class="table-header">
         <div class="row">
