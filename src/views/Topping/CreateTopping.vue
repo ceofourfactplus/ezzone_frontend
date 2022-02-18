@@ -195,7 +195,7 @@ export default {
         data.append("name", this.name);
         data.append("warehouse", this.warehouse);
         data.append("type_topping", this.type_topping);
-        data.append("create_by_id", 1);
+        data.append("create_by_id", this.$store.state.auth.userInfo.id);
         data.append("old_product_id", 1);
         api_product.post("topping/", data).then((response) => {
           const img = new FormData();

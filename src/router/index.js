@@ -109,11 +109,16 @@ import TempReport from "../views/Report/TempReport.vue";
 import Chart1 from "../views/TestChart/Chart1.vue";
 import FaceLogin from "../views/FaceDetector/LoginFace.vue";
 import Payment from "../views/Payment/Payment.vue";
-
+import WorkHour from "../views/User/WorkHour.vue";
 // Components
 import ProductQty from "../components/product/ProductQty.vue";
 
 const routes = [
+  {
+    path:"/work-hours",
+    component: WorkHour,
+    name: "WorkHour",
+  },
   {
     path: "/",
     redirect: "/user/login",

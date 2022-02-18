@@ -216,7 +216,7 @@ export default {
       var data = {
         category: this.edit_category.category,
         type_category: this.edit_category.type_category,
-        create_by: 1,
+        create_by: this.$store.state.auth.userInfo.id,
       };
       api_product.put("category/" + this.edit_category.id, data).then(() => {
         setTimeout(() => {

@@ -2,7 +2,7 @@
   <div>
     <div class="title">
       Dashboard
-      <router-link :to="{ name: 'Login' }">
+      <router-link :to="{ name: 'Login' }" @click="$store.dispatch('auth/userLogout')">
         <img src="../assets/icon/exit.png" class="hamburger" alt=""
       /></router-link>
     </div>

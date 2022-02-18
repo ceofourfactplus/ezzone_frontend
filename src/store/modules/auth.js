@@ -1,4 +1,4 @@
-import axios from "axios";
+import {api_user} from '../../api/api_user'
 export default {
   namespaced: true,
   state: {
@@ -21,6 +21,7 @@ export default {
     destroyToken(state) {
       localStorage.removeItem("username");
       localStorage.removeItem("password");
+      api_user.post("logout/"+state.accessToken)
       state.accessToken = null;
     },
     newToken(state, { access }) {
@@ -40,13 +41,16 @@ export default {
       }
     },
     confirm_pass_f(context, password) {
-      axios
-        .post("http://127.0.0.1:8000/auth/conf-pas/", {
+      api_user
+        .post("conf-pas/", {
           password: password,
           id: context.state.userInfo.id,
         })
         .then(() => {
           context.commit("check_pass", true);
+          api_product.get('sale-channel/ezzone').then((response)=>{
+            $store.state.ezzone_id = response.data.id;
+          })
           return "success";
         })
         .catch(() => {

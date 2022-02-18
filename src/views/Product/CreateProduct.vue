@@ -242,7 +242,7 @@ export default {
         data.append("name", this.name);
         data.append("warehouse", this.stock);
         data.append("topping_category_id", this.toppingcategory_id);
-        data.append("create_by_id", 1);
+        data.append("create_by_id", this.$store.state.auth.userInfo.id);
         api_product.post("product/", data).then((response) => {
           const img = new FormData();
           img.append("img", this.img, this.img.name);
