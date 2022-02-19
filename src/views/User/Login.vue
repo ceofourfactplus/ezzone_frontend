@@ -70,6 +70,7 @@
 <script>
 import { mapState } from "vuex";
 import { api_user } from "../../api/api_user";
+import { api_product } from "../../api/api_product";
 export default {
   name: "Login",
   computed: mapState(["auth"]),
@@ -94,7 +95,10 @@ export default {
         .then((response) => {
           this.auth.accessToken = response.data.token;
           this.auth.userInfo = response.data.user_set;
-          this.$router.push({ name: "DashBoard" });
+          api_product.get('sale-channel/ezzone').then((response)=>{
+            this.$router.push({ name: "DashBoard" });
+            this.$store.state.ezzone_id = response.data.id;
+          })
         })
         .catch((err) => {
           console.log(err);
