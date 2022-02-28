@@ -1,7 +1,7 @@
 <template>
   <div>
-    <nav-app :url_name="'SelectReport'"
-      ><span style="text-transform: capitalize">{{ $route.params.type }}</span>
+    <nav-app :url_name="'SelectReport'" :report="true">
+      <span style="text-transform: capitalize">{{ $route.params.type }}</span>
       Report</nav-app
     >
     <div class="row" style="width: 85%; margin: auto">
@@ -15,13 +15,13 @@
           </div>
           <div class="col-4 w-100">
             <select v-model="day" @change="select_date()">
+              <option value="0">Sunday</option>
               <option value="1">Monday</option>
               <option value="2">Tuesday</option>
               <option value="3">Wednesday</option>
               <option value="4">Thursday</option>
               <option value="5">Friday</option>
               <option value="6">Saturday</option>
-              <option value="0">Sunday</option>
             </select>
           </div>
         </div>
@@ -161,7 +161,7 @@
         </div>
         <div class="w-100 total-mini" style="display: inline"></div>
       </div>
-      <div class="col-3 space" @click="$router.push({name:'ProductReport'})">
+      <div class="col-3 space">
         <div class="w-100 mini-title mb-2">
           <img src="../../assets/icon/top-drink.png" alt="" />
           Drink
@@ -232,6 +232,8 @@ export default {
         data.append("year_from", year)
         data.append("month_from", month)
         data.append("day_from", day)
+        this.from_date = `${year}-${month}-${day}`
+        this.to_date = `${year}-${month}-${day + 1}`
       } else if (this.$route.params.type == 'weekly') {
         this.calc_week()
         day -= this.day
@@ -267,9 +269,10 @@ export default {
         data.append("year_from", parseInt(temp_from[0]))
         data.append("month_from", parseInt(temp_from[1]))
         data.append("day_from", parseInt(temp_from[2]))
-
+        
+        this.$store.state.report.date_data = data
         api_pos
-            .post("report/by_date", data)
+            .post("report/by_date", this.$store.state.report.date_data)
             .then((response) => {
               this.report = response.data;
           });
@@ -292,30 +295,55 @@ export default {
       return value;
     },
     select_date() {
-      var getDaysArray = function (s, e) {
-        for (var a = [], d = new Date(s); d <= e; d.setDate(d.getDate() + 1)) {
-          a.push(new Date(d));
-        }
-        return a;
-      };
-
-      Date.prototype.backDays = function (days) {
-        var date = new Date(this.valueOf());
-        date.setDate(date.getDate() - days);
-        return date;
-      };
-
+      var data = new FormData();
       var dateObj = new Date();
-      var next_week = new Date().backDays(7);
-      var range_date = getDaysArray(next_week, dateObj);
+      var week_day = dateObj.getDay()
+      var day = dateObj.getUTCDate();
+      var month = dateObj.getUTCMonth() + 1;
+      var year = dateObj.getUTCFullYear();
 
-      for (const date of range_date) {
-        if (date.getDay() == this.day) {
-          console.log(date);
-        }
-      }
+        if (this.$route.params.type == 'daily') {
+          data.append("year_to", year)
+          data.append("month_to", month)
+          data.append("day_to",  (day + 1) - (week_day - this.day))
+          data.append("year_from", year)
+          data.append("month_from", month)
+          data.append("day_from", day - (week_day - this.day))
+      } 
+        console.log('day search',day, this.day,',', day - (week_day - this.day))
+        console.log('week_day', week_day)
+        this.$store.state.report.date_data = data
+        api_pos
+            .post("report/by_date", this.$store.state.report.date_data)
+            .then((response) => {
+              this.report = response.data;
+          });
+    }
+    // select_date() {
+    //   var getDaysArray = function (s, e) {
+    //     for (var a = [], d = new Date(s); d <= e; d.setDate(d.getDate() + 1)) {
+    //       a.push(new Date(d));
+    //     }
+    //     return a;
+    //   };
+
+    //   Date.prototype.backDays = function (days) {
+    //     var date = new Date(this.valueOf());
+    //     date.setDate(date.getDate() - days);
+    //     return date;
+    //   };
+
+    //   var dateObj = new Date();
+    //   var next_week = new Date().backDays(7);
+    //   var range_date = getDaysArray(next_week, dateObj);
+
+    //   for (const date of range_date) {
+    //     if (date.getDay() == this.day) {
+    //       console.log(date);
+    //     }
+    //   }
       
-    },
+    // },
   },
 };
 </script>

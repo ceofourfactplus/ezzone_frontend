@@ -9,8 +9,18 @@
             @click="$router.push({ name: url_name,params: params })"
           />
         </div>
-        <div class="col-10 w-100">
+        <div class="col-9 w-100" v-if="report">
           <h1 id="login" class="header-text"><slot></slot></h1>
+        </div>
+        <div class="col-10 w-100" v-else>
+          <h1 id="login" class="header-text"><slot></slot></h1>
+        </div>
+        <div class="col-1" v-if="report">
+          <img
+            src="../../assets/icon/graph.png"
+            style="top: 26px; right: 100px; position: absolute; height: 40px;"
+            @click="$router.push({name:'ProductReport'})"
+          />
         </div>
         <div class="col-1" v-if="save">
           <img
@@ -36,6 +46,13 @@
           />
         </div>
         <div class="col-1" v-else-if="product_menu">
+          <img
+            src="../../assets/icon/Menu-icon.png"
+            style="top: 10px; right: 25px; position: absolute; height: 80px"
+            @click="open_slide"
+          />
+        </div>
+        <div class="col-1" v-else-if="report">
           <img
             src="../../assets/icon/Menu-icon.png"
             style="top: 10px; right: 25px; position: absolute; height: 80px"
@@ -100,6 +117,37 @@
           @click="select_page(item)"
           :class="{
             'rm-link-clicked': item.url_name == $store.state.raw_material.page,
+          }"
+        >
+          {{ item.name }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Report Side Nav -->
+    <div id="mySidenav" class="sidenav" v-if="report">
+      <a href="javascript:void(0)" class="closebtn" @click="close_slide"
+        >&times;</a
+      >
+      <div
+        style="margin-top: 30px; color: #889898; margin-left: 0px"
+        v-for="item in $store.state.report.side_nav"
+        :key="item"
+      >
+        <div
+          style="
+            display: inline;
+            text-align: left;
+            font-size: 30px;
+            margin-left: -20px;
+          "
+          :style="item.style"
+          @click="
+            $router.push({ name: 'MainReport', params: { type: item.url_name } });
+            this.$store.state.report.page = item.url_name;
+          "
+          :class="{
+            'rm-link-clicked': item.url_name == $store.state.report.page,
           }"
         >
           {{ item.name }}
@@ -183,7 +231,8 @@ export default {
     "trash",
     "url_name",
     "product_menu",
-    'params'
+    'params',
+    'report',
   ],
   data() {
     return {

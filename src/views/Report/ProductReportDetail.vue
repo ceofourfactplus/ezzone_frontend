@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav-app>Food Report</nav-app>
+    <nav-app :url_name="'ProductReport'">{{ $route.params.type }} Report</nav-app>
     <div class="row" style="width: 90%; margin: auto">
       <div class="col-12" style="text-align: right">
         <select

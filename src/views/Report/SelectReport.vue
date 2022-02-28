@@ -6,7 +6,8 @@
         <button
           class="btn-ghost"
           @click="
-            $router.push({ name: 'MainReport', params: { type: 'daily' } })
+            $router.push({ name: 'MainReport', params: { type: 'daily' } });
+            $store.state.report.page = 'daily'
           "
         >
           Daily Report
@@ -16,7 +17,8 @@
         <button
           class="btn-ghost"
           @click="
-            $router.push({ name: 'MainReport', params: { type: 'weekly' } })
+            $router.push({ name: 'MainReport', params: { type: 'weekly' } });
+            $store.state.report.page = 'weekly'
           "
         >
           Weekly Report
@@ -26,7 +28,8 @@
         <button
           class="btn-ghost"
           @click="
-            $router.push({ name: 'MainReport', params: { type: 'monthly' } })
+            $router.push({ name: 'MainReport', params: { type: 'monthly' } });
+            $store.state.report.page = 'monthly'
           "
         >
           Monthly Report

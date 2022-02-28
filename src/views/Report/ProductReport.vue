@@ -29,15 +29,15 @@
               <option value="Sunday">Sunday</option>
             </select>
             <ul class="w-100">
-              <li>
+              <li @click="$router.push(`/report/product/Food`)">
                 <div class="color" style="background-color: #ff6385"></div>
                 Food
               </li>
-              <li>
+              <li @click="$router.push(`/report/product/Drink`)">
                 <div class="color" style="background-color: #25a0e8"></div>
                 Drink
               </li>
-              <li>
+              <li @click="$router.push(`/report/product/Dessert`)">
                 <div class="color" style="background-color: #ffce61"></div>
                 Dressert
               </li>
@@ -113,7 +113,7 @@
             {{ food.name }}
           </div>
 
-          <!-- dressert -->
+          <!-- dessert -->
           <div
             class="col-12 table-item mt-2 w-100 table"
             style="padding-left: 10px; font-weight: bold; text-align: left"
@@ -205,17 +205,28 @@ export default {
   components: { NavApp, PieChartProduct },
   data() {
     return {
-      data_total_price: [50, 50],
+      data_total_price: [null, null, null],
       report_product: {},
       day: "",
     };
   },
   mounted() {
-    api_pos.get("report/all-product").then((response) => {
+    console.log(this.$store.state.report.date_data, 'date_data')
+    api_pos.post("report/all-product", this.$store.state.report.date_data).then((response) => {
       this.report_product = response.data;
-      this.data_total_price[0] = response.data.total_price_food;
-      this.data_total_price[1] = response.data.total_price_drink;
-      this.data_total_price[2] = response.data.total_price_dressert;
+      // ['top_dressert', 'top_drink', 'top_food'].forEach(key => {
+      //   console.log(response.data[key], "key")
+      //   if (response.data[key].length != 0) { 
+      //     this.data_total_price.push(response.data[key])
+      //   }
+      // })
+      console.log(response.data, 'data')
+      console.log(response.data.total_price_food, 'food')
+      console.log(response.data.total_price_drink, 'drink')
+      console.log(response.data.total_price_dressert, 'dessert')
+      this.data_total_price[0] = response.data.total_price_food
+      this.data_total_price[1] = response.data.total_price_drink
+      this.data_total_price[2] = response.data.total_price_dressert
     });
   },
 };

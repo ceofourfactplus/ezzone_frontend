@@ -7,6 +7,7 @@ import sale_channel from "./modules/sale_channel";
 import raw_material from "./modules/raw_material";
 import promotion from "./modules/promotion";
 import pos from "./modules/pos"
+import report from "./modules/report"
 
 
 export default createStore({
@@ -28,5 +29,6 @@ export default createStore({
     raw_material,
     sale_channel,
     promotion,
+    report,
   },
 });
