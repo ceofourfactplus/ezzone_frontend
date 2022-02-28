@@ -221,7 +221,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import {api_user} from "../../api/api_user"
 import NavApp from "../../components/main_component/NavApp.vue";
 // import CheckBoxWhite from '../../components/main_component/CheckBoxWhite.vue';
 export default {
@@ -284,8 +284,7 @@ export default {
         user.append("birth_date", this.birth_date);
         user.append("img", this.img);
         user.append("gender", this.gender);
-        axios
-          .post("http://192.168.1.118:8000/user/register/", user)
+        api_user.post("register/", user)
           .then(() => {
             this.alert = true;
             setTimeout(() => {

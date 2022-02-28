@@ -320,3 +320,8 @@ export default {
   object-fit: cover;
 }
 </style>
+/home/ceofourfactplus/ezzone_backend/env/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          backend.wsgi:application
