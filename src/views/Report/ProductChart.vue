@@ -84,7 +84,7 @@ export default {
           ticks: {
             enabled:true,
             font: {
-              size: 20,
+              size: 12,
             },
             color: "#fff",
           },
@@ -93,7 +93,7 @@ export default {
           ticks: {
             enabled:true,
             font: {
-              size: 20,
+              size: 12,
             },
             color: "#fff",
           },
