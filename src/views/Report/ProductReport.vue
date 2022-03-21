@@ -211,8 +211,8 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$store.state.report.date_data, 'date_data')
-    api_pos.post("report/product-detail",this.$store.state.report.date_data).then((response) => {
+    console.log(this.$store.state.report.date_data.get('year_from'), 'date_data')
+    api_pos.post("report/all-product",this.$store.state.report.date_data).then((response) => {
       this.report_product = response.data;
       // ['top_dressert', 'top_drink', 'top_food'].forEach(key => {
       //   console.log(response.data[key], "key")
