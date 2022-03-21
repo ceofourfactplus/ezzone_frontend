@@ -212,7 +212,7 @@ export default {
   },
   mounted() {
     console.log(this.$store.state.report.date_data, 'date_data')
-    api_pos.get("report/all-product").then((response) => {
+    api_pos.post("report/product-detail",this.$store.state.report.date_data).then((response) => {
       this.report_product = response.data;
       // ['top_dressert', 'top_drink', 'top_food'].forEach(key => {
       //   console.log(response.data[key], "key")
