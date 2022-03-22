@@ -205,7 +205,7 @@ export default {
   components: { NavApp, PieChartProduct },
   data() {
     return {
-      data_total_price: [null, null, null],
+      data_total_price: ['', '', ''],
       report_product: {},
       day: "",
     };

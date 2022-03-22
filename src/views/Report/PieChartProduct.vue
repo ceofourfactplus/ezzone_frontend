@@ -45,7 +45,9 @@ export default {
             family: "Sarabun",
           },
           formatter: function (value, context) {
-            return value + " ฿";
+            if(value != null) {
+              return value + " ฿";
+            }
           },
         },
         legend: {
