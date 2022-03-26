@@ -41,7 +41,7 @@
                 <div class="color" style="background-color: #ffce61"></div>
                 Dressert
               </li>
-              <li>
+              <li @click="$router.push(`/report/product/Topping`)">
                 <div class="color" style="background-color: #9b62fb"></div>
                 Topping
               </li>
@@ -212,22 +212,19 @@ export default {
   },
   mounted() {
     console.log(this.$store.state.report.date_data.get('year_from'), 'date_data')
-    api_pos.post("report/all-product",this.$store.state.report.date_data).then((response) => {
-      this.report_product = response.data;
-      // ['top_dressert', 'top_drink', 'top_food'].forEach(key => {
-      //   console.log(response.data[key], "key")
-      //   if (response.data[key].length != 0) { 
-      //     this.data_total_price.push(response.data[key])
-      //   }
-      // })
-      console.log(response.data, 'data')
-      console.log(response.data.total_price_food, 'food')
-      console.log(response.data.total_price_drink, 'drink')
-      console.log(response.data.total_price_dressert, 'dessert')
-      this.data_total_price[0] = response.data.total_price_food
-      this.data_total_price[1] = response.data.total_price_drink
-      this.data_total_price[2] = response.data.total_price_dressert
-    });
+    setTimeout(() => {
+      api_pos.post("report/all-product",this.$store.state.report.date_data).then((response) => {
+        console.log('response',response.data)
+        this.report_product = response.data;
+        console.log(response.data, 'data')
+        console.log(response.data.total_price_food, 'food')
+        console.log(response.data.total_price_drink, 'drink')
+        console.log(response.data.total_price_dressert, 'dessert')
+        this.data_total_price[0] = response.data.total_price_food
+        this.data_total_price[1] = response.data.total_price_drink
+        this.data_total_price[2] = response.data.total_price_dressert
+      });
+    }, 1000);
   },
 };
 </script>

@@ -32,7 +32,7 @@ export default {
     }
   },
   beforeMount() {
-    var type_dict = {'Food': 3, 'Drink': 2, 'Dessert': 1}
+    var type_dict = {'Food': 3, 'Drink': 2, 'Dessert': 1, 'Topping': 'topping'}
     var data = this.$store.state.report.date_data
     data.append('type_product', type_dict[this.$route.params.type])
     api_pos.post("report/product-detail", data).then((response) => {
