@@ -40,7 +40,7 @@ export default {
           console.log(response.data, 'topping data')
           console.log(this.testData, 'topping testData')
           response.data.top_products.forEach(item => {
-            this.testData.labels.push(item.name)
+            this.testData.labels.push(item.topping_set.name)
             this.testData.datasets[0].data.push(
               response.data.all_price[
                 response.data.top_products.indexOf(item)
