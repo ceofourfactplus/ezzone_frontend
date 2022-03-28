@@ -1,6 +1,9 @@
+
 export default {
     state:{
         date_data: null,
+        start_date: null,
+        end_date: null,
         page: null,
         side_nav: [
             {name: 'Daily Report', url_name: 'daily', style: "margin-left: -20px;",},
