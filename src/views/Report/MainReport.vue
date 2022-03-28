@@ -201,12 +201,22 @@
 </template>
 
 <script>
+import moment from "moment";
 import { api_pos } from "../../api/api_pos";
 import NavApp from "../../components/main_component/NavApp.vue";
 export default {
   components: { NavApp },
   mounted() {
     this.reportation()
+    // this.from_date = new Date.getDate()
+    // this.to_date = new Date.getDate()
+    if(this.$store.state.report.date_data != null){
+    this.from_date = moment().format('YYYY-MM-DD')
+    this.to_date = moment().format('YYYY-MM-DD')
+    this.find();
+    }else{
+      
+    }
   },
   data() {
     return {

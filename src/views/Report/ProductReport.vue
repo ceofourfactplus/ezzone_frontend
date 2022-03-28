@@ -144,7 +144,7 @@
             class="col-12 table-item mt-2 w-100 table"
             style="padding-left: 10px; font-weight: bold; text-align: left"
           >
-            Top 10 Food
+            Top 10 topping
             <img
               src="../../assets/icon/fork-active.png"
               style="height: 30px"
@@ -170,7 +170,7 @@
             class="col-12 table-item mt-2 w-100 table"
             style="padding-left: 10px; font-weight: bold; text-align: left"
           >
-            Top 10 dressert
+            Top 10 consign
             <img
               src="../../assets/icon/fork-active.png"
               style="height: 30px"
