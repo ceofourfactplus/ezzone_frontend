@@ -201,12 +201,23 @@
 </template>
 
 <script>
+import moment from "moment";
 import { api_pos } from "../../api/api_pos";
 import NavApp from "../../components/main_component/NavApp.vue";
+import axios from 'axios';
 export default {
   components: { NavApp },
   mounted() {
     this.reportation()
+    // this.from_date = new Date.getDate()
+    // this.to_date = new Date.getDate()
+    if(this.$store.state.report.date_data != null){
+    this.from_date = moment().format('YYYY-MM-DD')
+    this.to_date = moment().format('YYYY-MM-DD')
+    this.find();
+    }else{
+      
+    }
   },
   data() {
     return {
@@ -226,14 +237,9 @@ export default {
       var data = new FormData();
       this.day = dateObj.getDay();
       if (this.$route.params.type == 'daily') {
-        data.append("year_to", year)
-        data.append("month_to", month)
-        data.append("day_to", day + 1)
-        data.append("year_from", year)
-        data.append("month_from", month)
-        data.append("day_from", day)
-        this.from_date = `${year}-${month}-${day}`
-        this.to_date = `${year}-${month}-${day + 1}`
+        api_pos.get('report/daily').then(response => {
+          this.report = response.data
+        })
       } else if (this.$route.params.type == 'weekly') {
         this.calc_week()
         day -= this.day
@@ -243,6 +249,11 @@ export default {
         data.append("year_from", year)
         data.append("month_from", month)
         data.append("day_from", day)
+        api_pos
+          .post("report/by_date", data)
+          .then((response) => {
+            this.report = response.data;
+        });
       } else {
         data.append("year_to", year)
         data.append("month_to", month + 1)
@@ -250,12 +261,13 @@ export default {
         data.append("year_from", year)
         data.append("month_from", month)
         data.append("day_from", day)
-      }
-      api_pos
+        api_pos
           .post("report/by_date", data)
           .then((response) => {
             this.report = response.data;
         });
+      }
+      
     },
     find() {
       if(this.from_date != '' && this.to_date != '') {

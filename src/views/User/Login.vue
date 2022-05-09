@@ -95,7 +95,7 @@ export default {
         .then((response) => {
           this.auth.accessToken = response.data.token;
           this.auth.userInfo = response.data.user_set;
-          api_product.get('sale-channel/ezzone').then((response)=>{
+          api_product.get('/sale-channel/ezzone').then((response)=>{
             this.$router.push({ name: "DashBoard" });
             this.$store.state.ezzone_id = response.data.id;
           })

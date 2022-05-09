@@ -156,7 +156,6 @@
             </div>
             <div
               class="col-1"
-              v-if="order.payment_status < 3 && order.status_order != 4"
             >
               <img
                 @click="selected_cancel = order"
@@ -360,8 +359,7 @@ export default {
   justify-content: space-between;
   margin: 10px 0px;
 }
-.finish {
-}
+
 div {
   white-space: nowrap;
   /* line-height: 30px; */

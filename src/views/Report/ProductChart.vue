@@ -27,18 +27,33 @@ export default {
     };
   },
   beforeMount() {
-    var type_dict = { Food: 3, Drink: 2, Dessert: 1 };
+    var type_dict = { Food: 3, Drink: 2, Dessert: 1, Topping: "topping" };
     var data = this.$store.state.report.date_data;
     data.append("type_product", type_dict[this.$route.params.type]);
-    api_pos.post("report/product-detail", data).then((response) => {
-      response.data.top_products.forEach((item) => {
-        this.testData.labels.push(item.name);
-        this.testData.datasets[0].data.push(
-          response.data.all_price[response.data.top_products.indexOf(item)]
-        );
+    if (this.$route.params.type == "Topping") {
+      api_pos.post("report/topping-detail", data).then((response) => {
+        console.log(response.data, "topping data");
+        response.data.top_products.forEach((item) => {
+          this.testData.labels.push(item.name);
+          this.testData.datasets[0].data.push(
+            response.data.all_price[response.data.top_products.indexOf(item)]
+          );
+        });
+        this.loading = true;
       });
-      this.loading = true;
-    });
+    } else {
+      api_pos.post("report/product-detail", data).then((response) => {
+        console.log(response.data, "data");
+        console.log(this.testData, "testData");
+        response.data.top_products.forEach((item) => {
+          this.testData.labels.push(item.name);
+          this.testData.datasets[0].data.push(
+            response.data.all_price[response.data.top_products.indexOf(item)]
+          );
+        });
+        this.loading = true;
+      });
+    }
   },
   components: { BarChart },
   setup(props) {
@@ -75,7 +90,7 @@ export default {
           ticks: {
             enabled: true,
             font: {
-              size: 20,
+              size: 12,
             },
             color: "#fff",
           },
@@ -84,7 +99,7 @@ export default {
           ticks: {
             enabled: true,
             font: {
-              size: 20,
+              size: 12,
             },
             color: "#fff",
           },
