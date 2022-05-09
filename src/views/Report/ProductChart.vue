@@ -2,20 +2,16 @@
   <div>
     <div v-if="loading">
       <BarChart
-          :chartData="testData"
-          :options="testOptions"
-          :plugins="Plugins"
-          :width="700"
-          :height="800"
-          style="margin: auto"
-        />
+        :chartData="testData"
+        :options="testOptions"
+        :plugins="Plugins"
+        :width="700"
+        :height="1600"
+        style="margin: auto"
+      />
     </div>
-    <div v-else>
-      Loading...
-    </div>
+    <div v-else>Loading...</div>
   </div>
-  
-  
 </template>
 
 <script>
@@ -23,31 +19,26 @@ import { BarChart } from "vue-chart-3";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { api_pos } from "../../api/api_pos";
 
-
 export default {
   props: ["data"],
   data() {
     return {
       loading: false,
-    }
+    };
   },
   beforeMount() {
-    var type_dict = {'Food': 3, 'Drink': 2, 'Dessert': 1}
-    var data = this.$store.state.report.date_data
-    data.append('type_product', type_dict[this.$route.params.type])
+    var type_dict = { Food: 3, Drink: 2, Dessert: 1 };
+    var data = this.$store.state.report.date_data;
+    data.append("type_product", type_dict[this.$route.params.type]);
     api_pos.post("report/product-detail", data).then((response) => {
-      console.log(response.data, 'data')
-      console.log(this.testData, 'testData')
-      response.data.top_products.forEach(item => {
-        this.testData.labels.push(item.name)
+      response.data.top_products.forEach((item) => {
+        this.testData.labels.push(item.name);
         this.testData.datasets[0].data.push(
-          response.data.all_price[
-            response.data.top_products.indexOf(item)
-          ]
-        )
+          response.data.all_price[response.data.top_products.indexOf(item)]
+        );
       });
-      this.loading = true
-    })
+      this.loading = true;
+    });
   },
   components: { BarChart },
   setup(props) {
@@ -82,7 +73,7 @@ export default {
       scales: {
         y: {
           ticks: {
-            enabled:true,
+            enabled: true,
             font: {
               size: 20,
             },
@@ -91,7 +82,7 @@ export default {
         },
         x: {
           ticks: {
-            enabled:true,
+            enabled: true,
             font: {
               size: 20,
             },
@@ -132,5 +123,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
