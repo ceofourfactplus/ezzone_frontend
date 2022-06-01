@@ -145,7 +145,11 @@
         </div>
         <!-- select flavour level -->
         <div class="col-3 w-100" style="height: 200px">
-          <div class="btn-group-vertical" role="group" v-if="product.product_set.flavour_level">
+          <div
+            class="btn-group-vertical"
+            role="group"
+            v-if="product.product_set.flavour_level"
+          >
             <button
               class="btn btn-ghost"
               @click="product.flavour_level = 3"
@@ -196,7 +200,7 @@
       <div class="col-12">{{ this.product.code }}</div>
     </div>
     <div v-if="blur">
-      <div class="blur" @click="blur=false"></div>
+      <div class="blur" @click="blur = false"></div>
       <div class="card" :class="{ 'card-active': blur }">
         <div
           class="row"
@@ -253,7 +257,12 @@
           <div class="col-6 w-100 mt-3">
             <button
               class="btn-ghost-g"
-              style="width: 165px; height: 65px; font-size: 30px;white-space: nowrap;"
+              style="
+                width: 165px;
+                height: 65px;
+                font-size: 30px;
+                white-space: nowrap;
+              "
               @click="blur = false"
             >
               Confirm
@@ -276,7 +285,7 @@ export default {
       this.product = this.edit_product;
     } else {
       api_product
-        .get("product/" + this.$route.params.product_id)
+        .get(`product/${this.$route.params.product_id}/`)
         .then((response) => {
           this.product.product_set = response.data;
           this.product.product = response.data.id;
@@ -306,9 +315,9 @@ export default {
       topping: null,
       blur: false,
       all_description: [
-      ["แยกนมข้น", "ไม่โรยหน้า", "ไม่โรยน้ำตาล", "ขอช้อนส้อม"],  
-      ["แยกน้ำแข็ง", "แยกท๊อปปิ้ง", "ขอถุงหิ้ว", "เพิ่มหลอด"], 
-      ["ไข่ไม่สุก", "ข้าวน้อย", "ไม่ใส่ผัก", "ขอช้อนส้อม"],      
+        ["แยกนมข้น", "ไม่โรยหน้า", "ไม่โรยน้ำตาล", "ขอช้อนส้อม"],
+        ["แยกน้ำแข็ง", "แยกท๊อปปิ้ง", "ขอถุงหิ้ว", "เพิ่มหลอด"],
+        ["ไข่ไม่สุก", "ข้าวน้อย", "ไม่ใส่ผัก", "ขอช้อนส้อม"],
       ],
       description_list: [],
       select_description: [],
@@ -637,6 +646,4 @@ hr {
 }
 </style>
 
-
-// drink > 49 +15
-// food > 59 +15
+// drink > 49 +15 // food > 59 +15

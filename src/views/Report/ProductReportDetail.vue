@@ -1,59 +1,86 @@
 <template>
-  <div>
-    <nav-app :url_name="'ProductReport'">{{ $route.params.type }} Report</nav-app>
-    <div class="row" style="width: 90%; margin: auto">
-      <div class="col-12" style="text-align: right">
-        <select
-          style="
-            background-color: #717171;
-            width: 174px;
-            height: 43px;
-            font-weight: 700;
-            margin-right: 10px;
-          "
-          v-model="day"
-        >
-          <option value="Monday">Monday</option>
-        </select>
-        <select
-          style="
-            background-color: #717171;
-            width: 174px;
-            height: 43px;
-            font-weight: 700;
-          "
-          v-model="day"
-        >
-          <options value="Monday">Monday</options>
-          <options value="Tuesday">Tuesday</options>
-          <options value="Wednesday">Wednesday</options>
-          <options value="Thursday">Thursday</options>
-          <option value="Friday">Friday</option>
-          <option value="Saturday">Saturday</option>
-          <option value="Sunday">Sunday</option>
-        </select>
+  <div class="container mt-4">
+    <nav-app :url_name="'MainReport'">Daily Product Report</nav-app>
+    <div class="row">
+      <div class="col-12">
+        <label for="from_date"> From Date </label>
+        <input v-model="filter_form.date_from" id="from_date" type="date" />
+        <label for="from_date"> To Date </label>
+        <input v-model="filter_form.date_to" id="to_date" type="date" />
       </div>
-      <div class="col-12 frame" style="height: 800px; overflow-y: auto">
-        <product-chart></product-chart>
+      <div class="col-12">
+        <button @click="filter_form.category = null">all</button>
+        <button
+          v-for="category in categories"
+          :key="category.id"
+          type="button"
+          @click="filter_form.category = category.id"
+        >
+          {{ category.category }}
+        </button>
+      </div>
+      <div class="col-12 bg-light">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>name</th>
+              <th>amount</th>
+              <th>price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in report_data" :key="item.id">
+              <td>{{ item.name }}</td>
+              <td>{{ item.amount }}</td>
+              <td>{{ item.price }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import moment from "moment";
+import { api_pos } from "../../api/api_pos";
+import { api_product } from "../../api/api_product";
 import NavApp from "../../components/main_component/NavApp.vue";
-import ProductChart from "./ProductChart.vue";
 export default {
-  components: { ProductChart, NavApp },
-  mounted() {
-  },
+  components: { NavApp },
   data() {
     return {
-      category: [],
+      filter_form: {
+        date_from: "",
+        category: null,
+        date_to: "",
+      },
+      report_data: [],
+      categories: [],
     };
+  },
+  async created() {
+    const res = await api_product.get("category/");
+    this.categories = res.data;
+    this.filter_form.category = this.categories[0].id;
+    this.filter_form = {
+      date_from: moment().format("YYYY-MM-DD"),
+      date_to: moment().add(1, "days").format("YYYY-MM-DD"),
+    };
+  },
+  watch: {
+    filter_form: {
+      deep: true,
+      async handler() {
+        const res = await api_pos.get("report/by_date", {
+          params: this.filter_form,
+        });
+
+        this.report_data = res.data;
+      },
+    },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

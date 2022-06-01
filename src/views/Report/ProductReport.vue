@@ -1,6 +1,8 @@
 <template>
   <div>
-    <nav-app :url_name="'MainReport'" :params="{ type: 'daily' }">Daily Product Report</nav-app>
+    <nav-app :url_name="'MainReport'" :params="{ type: 'daily' }"
+      >Daily Product Report</nav-app
+    >
     <div class="row" style="width: 90%; margin: auto">
       <div class="col-12 frame">
         <div class="row">
@@ -205,26 +207,24 @@ export default {
   components: { NavApp, PieChartProduct },
   data() {
     return {
-      data_total_price: ['', '', ''],
+      data_total_price: ["", "", ""],
       report_product: {},
       day: "",
     };
   },
   mounted() {
-    console.log(this.$store.state.report.date_data.get('year_from'), 'date_data')
-    setTimeout(() => {
-      api_pos.post("report/all-product",this.$store.state.report.date_data).then((response) => {
-        console.log('response',response.data)
-        this.report_product = response.data;
-        console.log(response.data, 'data')
-        console.log(response.data.total_price_food, 'food')
-        console.log(response.data.total_price_drink, 'drink')
-        console.log(response.data.total_price_dressert, 'dessert')
-        this.data_total_price[0] = response.data.total_price_food
-        this.data_total_price[1] = response.data.total_price_drink
-        this.data_total_price[2] = response.data.total_price_dressert
-      });
-    }, 1000);
+    // console.log(
+    //   this.$store.state.report.date_data.get("year_from"),
+    //   "date_data"
+    // );
+    // setTimeout(() => {
+    //   api_pos.post("report/all-product",this.$store.state.report.date_data).then((response) => {
+    //     this.report_product = response.data;
+    //     this.data_total_price[0] = response.data.total_price_food
+    //     this.data_total_price[1] = response.data.total_price_drink
+    //     this.data_total_price[2] = response.data.total_price_dressert
+    //   });
+    // }, 1000);
   },
 };
 </script>

@@ -67,7 +67,9 @@
             </div>
             <div class="col-12 h-20">
               <label for="">Active&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
-              <div class="switch"><Switch @switch="switch_active()" :value="active" /></div>
+              <div class="switch">
+                <Switch @switch="switch_active()" :value="active" />
+              </div>
             </div>
             <div class="col-12 h-20">
               <label for="">Price&nbsp;&nbsp;:</label
@@ -109,7 +111,7 @@
         <div class="row">
           <div class="col-6 label-input">
             <label for="flavour">Flavour :</label
-            ><select id="flavour" v-model="flavour" style="width:61%;">
+            ><select id="flavour" v-model="flavour" style="width: 61%">
               <option value="2">Sweet</option>
               <option value="1">Spicy</option>
             </select>
@@ -124,10 +126,7 @@
           </div>
           <div class="col-5 label-input m-15">
             <label for="">Flavour Level&nbsp;&nbsp;:</label
-            ><Switch
-              @switch="change_status()"
-              :value="flavour_level"
-            />
+            ><Switch @switch="change_status()" :value="flavour_level" />
           </div>
           <div class="col-7 label-input m-15">
             <label for="type_topping">Topping Cate :</label
@@ -158,8 +157,7 @@ import { api_raw_material } from "../../api/api_raw_material";
 import { api_user } from "../../api/api_user";
 import NavApp from "../../components/main_component/NavApp.vue";
 import Switch from "../../components/main_component/Switch.vue";
-import SavePopup from "../../components/main_component/SavePopup.vue"
-
+import SavePopup from "../../components/main_component/SavePopup.vue";
 
 export default {
   components: { NavApp, Switch, SavePopup },
@@ -212,7 +210,7 @@ export default {
       });
     },
     get_unit() {
-      api_raw_material.get("unit").then((response) => {
+      api_raw_material.get("unit/").then((response) => {
         this.all_unit = response.data;
       });
     },
@@ -249,11 +247,11 @@ export default {
           api_product
             .put("update-img-product/" + response.data.id + "/", img)
             .then(() => {
-              this.alert = true
+              this.alert = true;
               setTimeout(() => {
-                this.alert = false
+                this.alert = false;
                 this.$router.push({ name: "Product" });
-              }, 2000)
+              }, 2000);
             });
         });
       }
