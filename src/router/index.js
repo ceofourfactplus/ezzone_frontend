@@ -115,7 +115,7 @@ import ProductQty from "../components/product/ProductQty.vue";
 
 const routes = [
   {
-    path:"/work-hours",
+    path: "/work-hours",
     component: WorkHour,
     name: "WorkHour",
   },
@@ -163,7 +163,7 @@ const routes = [
   {
     path: "/product-report",
     name: "ProductReport",
-    component: ProductReport,
+    component: ProductReportDetail,
     meta: {
       requiresLogin: true,
     },
